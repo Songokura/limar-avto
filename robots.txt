@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# ПРОД-ДОМЕН: при переезде поменять адрес sitemap
+Sitemap: https://songokura.github.io/limar-avto/sitemap.xml
