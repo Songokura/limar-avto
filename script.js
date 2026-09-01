@@ -14,7 +14,6 @@ var HAS_IO = typeof IntersectionObserver === "function";
 var KZ = {
 "m.title":"LIMAR AVTO - Орал қаласындағы Lada, Chevrolet, Renault бөлшектері",
 "m.desc":"Орал қаласындағы автобөлшектер дүкені: Lada, Chevrolet, Renault үшін түпнұсқалар мен сенімді аналогтар. Бағасы мен бар-жоғы 5-15 минутта, тапсырыспен 1-2 күнде әкелеміз. Ашық Жол базары, 60-бутик.",
-"logo.sub":"Lada · Chevrolet · Renault бөлшектері · Орал",
 
 "nav.1":"Ассортимент","nav.2":"Маркалар","nav.3":"Неге біз","nav.4":"Жұмыс тәртібі",
 "nav.5":"Пікірлер","nav.6":"Мекенжай","nav.wa":"WhatsApp",
@@ -24,17 +23,18 @@ var KZ = {
 
 "h.kick":"Орал · Ашық Жол авто базары · 60-бутик",
 "h.t1":"Автобөлшектер",
-"h.lead":"Түпнұсқалар мен сенімді аналогтар: Орал қаласында қоймада бар немесе тапсырыспен 1-2 күнде. Бағасы мен бар-жоғын 5-15 минутта айтамыз.",
-"h.cta1":"WhatsApp-қа жазу","h.cta2":"Ассортиментті көру",
+"h.lead":"Ресми дилерлердің түпнұсқа бөлшектері және сапалы аналогтар",
+"h.pill":"Бөлшектердің үлкен ассортименті: қоймада және тапсырыспен",
+"h.note":"Форманы толтырыңыз - бөлшек іріктеу бойынша кеңес аласыз",
 
-"f.h":"Бөлшектің бағасы мен бар-жоғын 10 минутта біліңіз",
+"f.h":"Өтінім қалдыру",
 "f.car":"Көліктің маркасы мен моделі - немесе VIN / фрейм-код",
 "f.car.ph":"Lada Vesta 1.8, 2019 - немесе VIN",
 "f.part":"Қандай бөлшек керек",
 "f.part.ph":"Веста 1.8-ге LUK ілінісу жинағы",
 "f.tel":"Телефон нөмірі",
-"f.send":"Бағасы мен бар-жоғын білу",
-"f.wa":"Немесе сұранысты бірден WhatsApp-қа жіберіңіз",
+"f.send":"Жіберу",
+"f.consent":"Дербес деректерімді өңдеуге келісім беремін",
 "f.note":"Өтінім WhatsApp арқылы менеджерге кетеді. Жұмыс уақытында 5-15 минутта жауап береміз.",
 "f.ok.h":"Рақмет! Өтінім қалыптасты.",
 "f.ok.p":"WhatsApp ашылмаса - қоңырау шалыңыз: +7 705 560-87-35",
@@ -53,6 +53,7 @@ var KZ = {
 "c5.h":"Қозғалтқышты күрделі жөндеу",
 "c5.p":"Поршеньдер, сақиналар, ГБЦ, ГРМ жинақтары, помпалар. ВАЗ 1.6 / 1.8, Renault K4M / K7M / H4M, Chevrolet қозғалтқыштары.",
 "c.cta":"Бағаны білу",
+"logo.sub":"Lada · Chevrolet · Renault бөлшектері · Орал",
 
 "s2.m":"сөрелерден",
 "s2.t":"60-бутиктен тірі фото - дәл қазір сөрелерде жатқан тауар",
@@ -121,9 +122,11 @@ var KZ = {
 /* служебные строки формы */
 var UI = {
  ru:{head:"Заявка с сайта LIMAR AVTO",car:"Авто",part:"Деталь",tel:"Телефон",
-     err:"Напишите, какая деталь нужна, и номер телефона."},
+     err:"Напишите, какая деталь нужна, и номер телефона.",
+     errc:"Отметьте согласие на обработку персональных данных."},
  kk:{head:"LIMAR AVTO сайтынан өтінім",car:"Көлік",part:"Бөлшек",tel:"Телефон",
-     err:"Қандай бөлшек керегін және телефон нөмірін жазыңыз."}
+     err:"Қандай бөлшек керегін және телефон нөмірін жазыңыз.",
+     errc:"Дербес деректерді өңдеуге келісім беріңіз."}
 };
 
 /* бегущая строка */
@@ -266,14 +269,23 @@ if (burger) {
   });
 }
 
-/* ---------------- КНОПКИ «УЗНАТЬ ЦЕНУ» У ПЛИТОК ---------------- */
+/* ---------------- ПЛИТКИ АССОРТИМЕНТА ----------------
+   Кликается вся карточка, не только кнопка: со смартфона это очевиднее. */
 var partField = document.getElementById("partField");
+function goToForm(part){
+  if (partField && !partField.value) partField.value = part + ": ";
+  var f = document.getElementById("qform");
+  if (f) f.scrollIntoView({behavior: RED ? "auto" : "smooth", block:"center"});
+  setTimeout(function(){ if (partField) partField.focus({preventScroll:true}); }, RED ? 0 : 600);
+}
 document.querySelectorAll("[data-part]").forEach(function(b){
-  b.addEventListener("click", function(){
-    if (partField && !partField.value) partField.value = b.dataset.part + ": ";
-    var f = document.getElementById("qform");
-    if (f) f.scrollIntoView({behavior: RED ? "auto" : "smooth", block:"center"});
-    setTimeout(function(){ if (partField) partField.focus({preventScroll:true}); }, RED ? 0 : 600);
+  b.addEventListener("click", function(){ goToForm(b.dataset.part); });
+});
+document.querySelectorAll(".cat").forEach(function(card){
+  card.addEventListener("click", function(ev){
+    if (ev.target.closest("a,button")) return;
+    var b = card.querySelector("[data-part]");
+    if (b) goToForm(b.dataset.part);
   });
 });
 
@@ -286,10 +298,18 @@ if (form) form.addEventListener("submit", function(e){
   var car = (f.get("car") || "").trim(),
       part = (f.get("part") || "").trim(),
       tel = (f.get("phone") || "").trim();
+  var consent = document.getElementById("consentBox");
+  var cwrap = consent ? consent.closest(".consent") : null;
   if (!part || !tel) {
     if (note) { note.textContent = T("err"); note.style.color = "#C8412F"; }
     return;
   }
+  if (consent && !consent.checked) {
+    if (cwrap) cwrap.classList.add("err");
+    if (note) { note.textContent = T("errc"); note.style.color = "#C8412F"; }
+    return;
+  }
+  if (cwrap) cwrap.classList.remove("err");
   var lines = [T("head")];
   if (car) lines.push(T("car") + ": " + car);
   lines.push(T("part") + ": " + part);
