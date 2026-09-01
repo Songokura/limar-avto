@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260901-4">
+<link rel="stylesheet" href="styles.css?v=20260901-5">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoPartsStore","name":"LIMAR AVTO",
 "description":"Магазин автозапчастей Chevrolet, Renault, Lada в Уральске. Оригиналы и проверенные аналоги в наличии и на заказ.",
@@ -113,9 +113,12 @@
 <main>
 
 <!-- ГЕРОЙ + ФОРМА -->
-<section class="hero" id="top">
+<div class="pw pw-tall" id="top">
+<section class="hero plate">
   <div class="hero-bg" aria-hidden="true">
-    <img src="assets/stock-hero.webp" alt="" width="1600" height="1065" fetchpriority="high">
+    <span class="hh hh-l"><img src="assets/stock-hero.webp" alt="" width="1600" height="1065" fetchpriority="high"></span>
+    <span class="hh hh-r"><img src="assets/stock-hero.webp" alt="" width="1600" height="1065"></span>
+    <i class="seam"></i>
   </div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
@@ -157,6 +160,7 @@
   </div>
   <div class="hero-edge" aria-hidden="true"></div>
 </section>
+</div>
 
 <!-- БЕГУЩАЯ СТРОКА -->
 <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
@@ -221,7 +225,8 @@
 </section>
 
 <!-- ЖИВЫЕ ФОТО С ПРИЛАВКА -->
-<section class="counter-strip" aria-label="Фото с прилавка">
+<div class="pw">
+<section class="counter-strip plate" aria-label="Фото с прилавка">
   <div class="wrap counter-head">
     <span class="mark mark-dark rv"><span data-i="s2.m">с прилавка</span></span>
     <p class="counter-t rv d1" data-i="s2.t">Живые фото из бутика 60 - то, что лежит на полках прямо сейчас</p>
@@ -236,6 +241,7 @@
     <img src="assets/brand-sufix.webp" data-i-alt="alt.p7" alt="Запчасти SUFIX на складе" loading="lazy" decoding="async" width="640" height="713">
   </div></div>
 </section>
+</div>
 
 <!-- МАРКИ И МОДЕЛИ -->
 <section class="sec sec-dark" id="marki">
@@ -416,6 +422,6 @@
   <a class="dock-wa" href="https://wa.me/77055608735" target="_blank" rel="noopener"><svg class="i"><use href="#ic-wa"/></svg>WhatsApp</a>
 </div>
 
-<script src="script.js?v=20260901-4"></script>
+<script src="script.js?v=20260901-5"></script>
 </body>
 </html>

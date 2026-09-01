@@ -209,6 +209,51 @@ function fillTicker(){
   el.querySelectorAll("img").forEach(function(i){ i.setAttribute("aria-hidden", "true"); });
 })();
 
+/* ---------------- ПЛИТЫ ----------------
+   Стандарт студии от 01.09.2026. Один слушатель scroll через rAF,
+   на каждую обёртку .pw пишем три числа; всё остальное делает CSS
+   через calc. Сигнатура проекта - «шов сцепления»: кадр разъезжается
+   двумя половинами, и той же формой открываются фото ниже. */
+(function plates(){
+  var pws = [].slice.call(document.querySelectorAll(".pw"));
+  if (!pws.length) return;
+  if (RED) { document.documentElement.classList.add("no-plate"); return; }
+  var strip = document.querySelector(".pstrip");
+  function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function easeOut(t){ return 1 - Math.pow(1 - t, 2.2); }
+  function update(){
+    var H = window.innerHeight || document.documentElement.clientHeight;
+    pws.forEach(function(pw){
+      var r = pw.getBoundingClientRect();
+      var enter = clamp(1 - r.top / H);
+      var exit  = clamp(1 - r.bottom / H);
+      var stay  = r.height > H + 1 ? clamp(-r.top / (r.height - H)) : enter;
+      pw.style.setProperty("--enter", enter.toFixed(3));
+      pw.style.setProperty("--exit",  exit.toFixed(3));
+      pw.style.setProperty("--stay",  stay.toFixed(3));
+      pw.classList.toggle("gone", exit >= 1);
+      pw.classList.toggle("on", enter > 0.72);
+      /* лента фото раскрывается швом от середины */
+      if (strip && pw.contains(strip)) {
+        strip.style.setProperty("--open", easeOut(clamp((enter - 0.28) / 0.5)).toFixed(3));
+      }
+    });
+  }
+  var tick = false;
+  function onScroll(){
+    if (tick) return;
+    tick = true;
+    requestAnimationFrame(function(){ tick = false; update(); });
+  }
+  addEventListener("scroll", onScroll, {passive:true});
+  addEventListener("resize", update);
+  addEventListener("load", update);
+  update();
+  /* синхронный пересчёт - нужен проверочным скриптам:
+     под --virtual-time-budget в headless не тикает requestAnimationFrame */
+  window.plateSync = update;
+})();
+
 /* ---------------- ПОЯВЛЕНИЕ ---------------- */
 if (HAS_IO) {
   if (!RED) document.documentElement.classList.add("js");
