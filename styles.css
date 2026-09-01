@@ -251,8 +251,7 @@ html.js .hw.up>span{transform:none}
 .qform-done b{display:block;font-family:var(--disp);font-weight:700;font-size:19px;margin-bottom:8px}
 .qform-done p{font-size:14.5px;color:var(--ink-2)}
 
-.hero-edge{position:absolute;left:0;right:0;bottom:0;height:3px;
-  background:linear-gradient(90deg,var(--amber) 0 34%,rgba(255,255,255,.12) 34%)}
+.hero-edge{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--amber)}
 
 /* -------- бегущая строка -------- */
 .ticker{background:var(--asphalt);border-bottom:1px solid var(--line-d);overflow:hidden;padding:15px 0}
