@@ -373,6 +373,7 @@ html.js .cat.in .cat-shot img,html.js .find-shot.in img{clip-path:inset(0)}
 .cat-render .cat-shot img{object-fit:contain;filter:none}
 .cat-render .cat-shot::after{display:none}
 .cat-render:hover .cat-shot img{transform:scale(1.03)}
+.cat-wide.cat-render .cat-shot{min-height:380px}
 .cat-wide .cat-shot{flex:1.15;aspect-ratio:auto;min-height:280px}
 .cat-wide .cat-b{flex:1;justify-content:center;padding:34px 38px}
 
