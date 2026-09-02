@@ -202,12 +202,19 @@ function T(k){ return UI[document.documentElement.lang === "kk" ? "kk" : "ru"][k
    Считаем ширину одной копии списка и повторяем её столько раз, сколько нужно. */
 function loopTrack(el, html){
   el.innerHTML = html;
+  var perCopy = el.children.length;                    /* элементов в одной копии */
   var one = el.scrollWidth || 1;
-  var need = Math.ceil((window.innerWidth + 240) / one);
-  if (!(need > 1)) need = 1;
+  var need = Math.ceil(window.innerWidth / one) + 1;   /* экран + одна копия про запас */
   var block = "";
   for (var i = 0; i < need; i++) block += html;
-  el.innerHTML = block + block;
+  el.innerHTML = block;
+  /* Шаг цикла меряем по факту - от первого элемента копии до первого элемента
+     следующей. Считать его равным scrollWidth одной копии нельзя: у ленты брендов
+     есть gap, и между копиями добавляется ещё один зазор. */
+  var first = el.children[0], next = el.children[perCopy];
+  var step = next ? (next.offsetLeft - first.offsetLeft) : one;
+  el.style.setProperty("--marq", step + "px");
+  el.style.animationDuration = (step / 85).toFixed(2) + "s"; /* 85 px/с на любой ширине */
 }
 function fillTicker(){
   var el = document.getElementById("ticker"); if (!el) return;
@@ -225,6 +232,11 @@ addEventListener("resize", function(){
   clearTimeout(trackTimer);
   trackTimer = setTimeout(function(){ fillTicker(); fillBrands(); }, 200);
 });
+/* пока не подгрузился Fira Sans, ширина копии меряется по запасному шрифту
+   и копий выходит меньше нужного - пересобираем по готовности шрифтов */
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function(){ fillTicker(); fillBrands(); });
+}
 /* дублируем ленту фото для бесшовного прогона */
 (function loopStrip(){
   var el = document.getElementById("pstrip"); if (!el) return;
