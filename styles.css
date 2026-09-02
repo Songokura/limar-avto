@@ -146,7 +146,6 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none}
    верхними углами. Прогресс считает JS в --enter/--stay/--exit.
    ============================================================ */
 .pw{position:relative;height:100svh;background:var(--asphalt)}
-.pw-tall{height:165svh}
 .plate{
   position:sticky;top:0;height:100svh;overflow:hidden;
   transform:scale(calc(1 - .07*var(--exit,0)));transform-origin:50% 45%;
@@ -161,14 +160,13 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none}
 /* без анимаций - плиты статичны, но композиция собрана */
 html.no-plate .plate{position:relative;height:auto;min-height:100svh;transform:none;border-radius:0}
 html.no-plate .plate::after{display:none}
-html.no-plate .pw,html.no-plate .pw-tall{height:auto}
+html.no-plate .pw{height:auto}
 
 /* 🔴 Плита героя работает только там, где герой ЦЕЛИКОМ влезает в экран.
    На узких (одноколоночный герой: копия + форма) и на низких экранах залипание
-   и height:100svh обрезали бы форму заявки - там герой обычная секция,
-   но сигнатурный шов продолжает жить от скролла. */
+   и height:100svh обрезали бы форму заявки - там герой обычная секция. */
 @media (max-width:1120px),(max-height:780px){
-  .pw-tall{height:auto}
+  .pw{height:auto}
   .hero.plate{position:relative;height:auto;min-height:100svh;transform:none;border-radius:0;overflow:hidden}
   .hero.plate::after{display:none}
 }
@@ -177,29 +175,9 @@ html.no-plate .pw,html.no-plate .pw-tall{height:auto}
 /* position не задаём - его даёт .plate (sticky), иначе правило перебьёт залипание */
 .hero{display:flex;align-items:center;padding:118px 0 64px}
 .hero-bg{position:absolute;inset:0;z-index:-2;overflow:hidden}
-/* СИГНАТУРА «шов сцепления»: кадр разъезжается двумя половинами,
-   в стыке загорается красный шов. Та же форма повторяется в раскрытии
-   фото ниже по странице - одна метафора, а не десять эффектов. */
-.hh{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;will-change:transform}
-.hh-l{left:0;transform:translate3d(calc(-7% * var(--stay,0)),0,0)}
-.hh-r{right:0;transform:translate3d(calc(7% * var(--stay,0)),0,0)}
-/* max-width:none обязателен: глобальное img{max-width:100%} режет половину до ширины контейнера,
-   и половины перестают складываться в один кадр */
-.hh img{position:absolute;top:0;width:200%;max-width:none;height:100%;object-fit:cover;filter:brightness(.42) saturate(1.05)}
-.hh-l img{left:0}
-.hh-r img{right:0}
-.seam{
-  position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;z-index:1;
-  background:linear-gradient(180deg,transparent,rgba(10,12,14,.6) 10%,rgba(10,12,14,.6) 90%,transparent);
-  transform:scaleY(calc(.4 + .6*var(--stay,0)));
-}
-.seam::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent,var(--red) 14%,var(--red) 86%,transparent);
-  opacity:calc(.95*var(--stay,0));
-}
-html.no-plate .hh-l,html.no-plate .hh-r{transform:none}
-html.no-plate .seam{display:none}
+/* Один цельный кадр без движения: клиент снял сигнатурный «шов»
+   (две разъезжающиеся половины с красной линией по стыку) 02.09.2026. */
+.hero-bg img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;filter:brightness(.42) saturate(1.05)}
 .hero-bg::after{
   content:"";position:absolute;inset:0;
   background:
@@ -301,20 +279,6 @@ html.js .hw.up>span{transform:none}
 .fld input:focus{outline:none;border-color:var(--red-deep);box-shadow:0 0 0 3px rgba(225,27,34,.22)}
 .fld input::placeholder{color:#A6ADB4}
 /* согласие на обработку персональных данных */
-.consent{display:flex;align-items:flex-start;gap:10px;margin:16px 0 16px;cursor:pointer}
-.consent input{
-  appearance:none;-webkit-appearance:none;flex:none;width:19px;height:19px;margin-top:1px;
-  border:1.5px solid #B9BFC5;border-radius:3px;background:#fff;transition:background .18s,border-color .18s;
-}
-.consent input:checked{background:var(--red);border-color:var(--red-deep)}
-.consent input:checked::after{
-  content:"";display:block;width:5px;height:10px;margin:1.5px auto 0;
-  border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(43deg);
-}
-.consent input:focus-visible{outline:2px solid var(--red-deep);outline-offset:2px}
-.consent span{font-size:12.8px;line-height:1.4;color:var(--ink-2)}
-.consent.err input{border-color:#C8412F}
-.consent.err span{color:#C8412F}
 .fnote{margin-top:13px;font-size:12.5px;line-height:1.45;color:var(--ink-2);text-align:center}
 .qform-done{padding:46px 30px 50px;text-align:center}
 .qform-done svg{width:56px;height:56px;color:var(--wa);margin:0 auto 16px}
@@ -402,6 +366,13 @@ html.js .cat.in .cat-shot img,html.js .find-shot.in img{clip-path:inset(0)}
 .cat:hover .cat-cta,.cat-cta:hover{background:var(--red);border-color:var(--red);color:#fff}
 .cat:hover .cat-cta i{transform:translateX(4px)}
 .cat-wide{grid-column:1/-1;flex-direction:row}
+.cat-wide.cat-flip{flex-direction:row-reverse}
+/* Кузов - технический рендер на белом: его нельзя резать по cover,
+   иначе разлетевшиеся детали уезжают за край кадра. */
+.cat-render .cat-shot{background:#fff}
+.cat-render .cat-shot img{object-fit:contain;filter:none}
+.cat-render .cat-shot::after{display:none}
+.cat-render:hover .cat-shot img{transform:scale(1.03)}
 .cat-wide .cat-shot{flex:1.15;aspect-ratio:auto;min-height:280px}
 .cat-wide .cat-b{flex:1;justify-content:center;padding:34px 38px}
 
@@ -614,8 +585,7 @@ section[id],article[id]{scroll-margin-top:100px}
   .find-info .find-cta{grid-column:1;grid-row:auto;flex-direction:row;flex-wrap:wrap;margin-top:8px}
 }
 @media (max-width:760px){
-  .pw-tall{height:142svh}
-  .hh img{object-position:58% center}
+  .hero-bg img{object-position:58% center}
   .hdr-in{height:64px;gap:12px}
   .kicker{font-size:10.5px;letter-spacing:.1em}
   .hdr-wa span{display:none}
@@ -623,7 +593,7 @@ section[id],article[id]{scroll-margin-top:100px}
   .logo-sub{display:none}
   .mnav{padding-top:84px}
   .cats{grid-template-columns:1fr}
-  .cat-wide{flex-direction:column}
+  .cat-wide,.cat-wide.cat-flip{flex-direction:column}
   .cat-wide .cat-shot{aspect-ratio:16/9;min-height:0;flex:none}
   .cat-wide .cat-b{padding:22px 24px}
   .why-grid{grid-template-columns:1fr}

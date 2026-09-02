@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260901-6">
+<link rel="stylesheet" href="styles.css?v=20260902-1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoPartsStore","name":"LIMAR AVTO",
 "description":"Магазин автозапчастей Chevrolet, Renault, Lada в Уральске. Оригиналы и проверенные аналоги в наличии и на заказ.",
@@ -113,12 +113,10 @@
 <main>
 
 <!-- ГЕРОЙ + ФОРМА -->
-<div class="pw pw-tall" id="top">
+<div class="pw" id="top">
 <section class="hero plate">
   <div class="hero-bg" aria-hidden="true">
-    <span class="hh hh-l"><img src="assets/stock-hero.webp" alt="" width="1600" height="1065" fetchpriority="high"></span>
-    <span class="hh hh-r"><img src="assets/stock-hero.webp" alt="" width="1600" height="1065"></span>
-    <i class="seam"></i>
+    <img src="assets/stock-hero.webp" alt="" width="1600" height="1065" fetchpriority="high">
   </div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
@@ -146,8 +144,6 @@
         <label class="fld"><span data-i="f.tel">Номер телефона</span>
           <input type="tel" name="phone" placeholder="+7 ___ ___ __ __" inputmode="tel" autocomplete="tel"></label>
         <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
-        <label class="consent"><input type="checkbox" name="consent" id="consentBox">
-          <span data-i="f.consent">Я согласен на обработку моих персональных данных</span></label>
         <button type="submit" class="btn btn-wa btn-full"><svg class="i"><use href="#ic-wa"/></svg><span data-i="f.send">Отправить</span></button>
         <p class="fnote" id="formNote" data-i="f.note">Заявка уйдёт в WhatsApp менеджеру. Ответим за 5-15 минут в рабочее время.</p>
       </div>
@@ -170,53 +166,80 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="mark rv"><span data-i="s1.m">ассортимент</span></span>
-      <h2 class="rv d1"><span data-i="s1.h1">Каталога нет - есть подбор.</span> <span class="h-acc" data-i="s1.h2">Пять направлений, любой узел.</span></h2>
+      <h2 class="rv d1"><span data-i="s1.h1">Каталога нет - есть подбор.</span> <span class="h-acc" data-i="s1.h2">Восемь направлений, любой узел.</span></h2>
       <p class="lead rv d2" data-i="s1.l">Напишите, что нужно - подберём оригинал или аналог, скажем цену. Нет в Уральске - привезём за 1-2 дня.</p>
     </div>
     <div class="cats">
 
       <article class="cat rv" id="to">
-        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-to.webp" data-i-alt="alt.to" alt="Замена масла: расходники для ТО Chevrolet, Renault, Lada" loading="lazy" decoding="async" width="1000" height="667"></figure>
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-to.webp" data-i-alt="alt.to" alt="Замена масла и расходники: запчасти для регламентного ТО Chevrolet, Renault, Lada" loading="lazy" decoding="async" width="1000" height="667"></figure>
         <div class="cat-b">
-          <h3 data-i="c1.h">Запчасти для ТО</h3>
-          <p data-i="c1.p">Фильтры, свечи, колодки, моторные и трансмиссионные масла - в т.ч. для АКПП Cobalt 6T30 и МКПП Renault / Lada.</p>
-          <button class="cat-cta btn-mini" type="button" data-part="Запчасти для ТО" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+          <h3 data-i="c1.h">Запчасти для регламентного ТО</h3>
+          <p data-i="c1.p">Фильтры, свечи, колодки, ремни, моторные и трансмиссионные масла - под интервал вашего ТО.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Запчасти для регламентного ТО" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
         </div>
       </article>
 
-      <article class="cat rv d1" id="kuzov">
-        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-kuzov.webp" data-i-alt="alt.kuzov" alt="Фара автомобиля крупным планом: кузовные детали и оптика" loading="lazy" decoding="async" width="1000" height="672"></figure>
+      <article class="cat rv d1" id="remont-dvigatelya">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-remont-dvig.webp" data-i-alt="alt.remont" alt="Головка блока цилиндров крупным планом: запчасти для ремонта двигателя" loading="lazy" decoding="async" width="1000" height="525"></figure>
         <div class="cat-b">
-          <h3 data-i="c2.h">Кузовные детали и оптика</h3>
-          <p data-i="c2.p">Бамперы, крылья, двери, капоты, крышки багажника, фары. В наличии и под быстрый заказ.</p>
-          <button class="cat-cta btn-mini" type="button" data-part="Кузовные детали / оптика" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+          <h3 data-i="c2.h">Запчасти для ремонта двигателей</h3>
+          <p data-i="c2.p">Поршни, кольца, вкладыши, ГБЦ, прокладки, комплекты ГРМ, помпы.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Запчасти для ремонта двигателя" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
         </div>
       </article>
 
-      <article class="cat rv" id="hodovaya">
-        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-hodovaya.webp" data-i-alt="alt.hod" alt="Амортизационная стойка: ходовая и подвеска" loading="lazy" decoding="async" width="1000" height="667"></figure>
+      <article class="cat cat-wide rv" id="dvigatel">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-dvigatel.webp" data-i-alt="alt.dvig" alt="Двигатель в сборе и блок цилиндров" loading="lazy" decoding="async" width="1000" height="563"></figure>
         <div class="cat-b">
-          <h3 data-i="c3.h">Ходовая и подвеска</h3>
-          <p data-i="c3.p">Стойки - обычные и усиленные, рычаги, шаровые, рулевые рейки.</p>
-          <button class="cat-cta btn-mini" type="button" data-part="Ходовая / подвеска" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+          <h3 data-i="c3.h">Двигатели разных моделей и комплектаций</h3>
+          <p data-i="c3.p">Двигатели в сборе ВАЗ 1.6 / 1.8, Renault K4M / K7M / H4M, Chevrolet - в наличии и под заказ.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Двигатель в сборе" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
         </div>
       </article>
 
-      <article class="cat rv d1" id="transmissiya">
-        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-transmissiya.webp" data-i-alt="alt.trans" alt="Шестерня в работе: трансмиссия и сцепление" loading="lazy" decoding="async" width="1000" height="667"></figure>
+      <article class="cat rv" id="transmissiya">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/cli-transmissiya.webp" data-i-alt="alt.trans" alt="Комплект сцепления и коробка передач в разрезе: трансмиссия" loading="lazy" decoding="async" width="1000" height="525"></figure>
         <div class="cat-b">
-          <h3 data-i="c4.h">Трансмиссия и сцепление</h3>
-          <p data-i="c4.p">Комплекты сцепления LUK и Valeo, выжимные подшипники, шестерни КПП.</p>
+          <h3 data-i="c4.h">Трансмиссия</h3>
+          <p data-i="c4.p">Комплекты сцепления LUK и Valeo, выжимные подшипники, шестерни и валы КПП.</p>
           <button class="cat-cta btn-mini" type="button" data-part="Трансмиссия / сцепление" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
         </div>
       </article>
 
-      <article class="cat cat-wide rv d2" id="dvigatel">
-        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-dvigatel.webp" data-i-alt="alt.dvig" alt="Двигатель в сборе и блок цилиндров: двигатели и запчасти для капремонта" loading="lazy" decoding="async" width="1000" height="563"></figure>
+      <article class="cat rv d1" id="hodovaya">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/cli-hodovaya.webp" data-i-alt="alt.hod" alt="Тормозной диск, амортизаторы, ШРУСы и фильтры: ходовая часть" loading="lazy" decoding="async" width="1000" height="525"></figure>
         <div class="cat-b">
-          <h3 data-i="c5.h">Двигатели</h3>
-          <p data-i="c5.p">Двигатели в сборе ВАЗ 1.6 / 1.8, Renault K4M / K7M / H4M, Chevrolet - и всё для капремонта: поршни, кольца, ГБЦ, комплекты ГРМ, помпы.</p>
-          <button class="cat-cta btn-mini" type="button" data-part="Двигатели" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+          <h3 data-i="c5.h">Ходовая часть</h3>
+          <p data-i="c5.p">Стойки обычные и усиленные, рычаги, шаровые, ступичные подшипники, ШРУСы.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Ходовая часть" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+        </div>
+      </article>
+
+      <article class="cat rv" id="upravlenie">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-upravlenie.webp" data-i-alt="alt.upr" alt="Тормозной диск с суппортом: системы управления автомобилем" loading="lazy" decoding="async" width="1000" height="525"></figure>
+        <div class="cat-b">
+          <h3 data-i="c6.h">Системы управления</h3>
+          <p data-i="c6.p">Рулевые рейки и тяги, тормозные диски, колодки, суппорты, шланги.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Системы управления" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+        </div>
+      </article>
+
+      <article class="cat rv d1" id="electro">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/stock-electro.webp" data-i-alt="alt.el" alt="Генератор с ремнём привода в моторном отсеке: электрооборудование" loading="lazy" decoding="async" width="1000" height="525"></figure>
+        <div class="cat-b">
+          <h3 data-i="c7.h">Электрооборудование</h3>
+          <p data-i="c7.p">Генераторы, стартеры, аккумуляторы, датчики, катушки зажигания, проводка.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Электрооборудование" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+        </div>
+      </article>
+
+      <article class="cat cat-wide cat-flip cat-render rv" id="kuzov">
+        <figure class="cat-shot"><span class="cat-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><img src="assets/cli-kuzov.webp" data-i-alt="alt.kuzov" alt="Схема кузова в разборе: бамперы, капот, двери, крылья, крышка багажника" loading="lazy" decoding="async" width="1351" height="1007"></figure>
+        <div class="cat-b">
+          <h3 data-i="c8.h">Кузовные детали</h3>
+          <p data-i="c8.p">Бамперы, крылья, двери, капоты, крышки багажника, фары и фонари.</p>
+          <button class="cat-cta btn-mini" type="button" data-part="Кузовные детали" data-i="c.cta">Узнать цену<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
         </div>
       </article>
 
@@ -422,6 +445,6 @@
   <a class="dock-wa" href="https://wa.me/77055608735" target="_blank" rel="noopener"><svg class="i"><use href="#ic-wa"/></svg>WhatsApp</a>
 </div>
 
-<script src="script.js?v=20260901-6"></script>
+<script src="script.js?v=20260902-1"></script>
 </body>
 </html>
