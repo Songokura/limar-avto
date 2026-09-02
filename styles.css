@@ -60,6 +60,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .btn-g:hover{border-color:var(--red);color:var(--red)}
 .sec-light .btn-g{border-color:var(--line-l);color:var(--ink)}
 .sec-light .btn-g:hover{border-color:var(--red-deep);color:var(--red-deep)}
+/* .find-info - тёмная плашка, и на светлой секции тоже: кнопка внутри неё светлая */
+.sec-light .find-info .btn-g{border-color:var(--line-d);color:#fff}
+.sec-light .find-info .btn-g:hover{border-color:var(--red-2);color:var(--red-2)}
 .btn-sm{padding:10px 16px;font-size:12.5px;border-radius:var(--rad-s)}
 .btn-full{width:100%}
 
@@ -329,8 +332,10 @@ html.js .rv.d3{transition-delay:.3s}
 
 /* -------- ассортимент -------- */
 .cats{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.2vw,26px)}
+/* карточка белая и в тёмной секции - цвет текста задаём явно,
+   иначе от .sec-dark приходит #fff и заголовки пропадают на белом */
 .cat{
-  background:var(--card);border-radius:var(--rad);overflow:hidden;border:1px solid var(--line-l);
+  background:var(--card);color:var(--ink);border-radius:var(--rad);overflow:hidden;border:1px solid var(--line-l);
   scroll-margin-top:104px;display:flex;flex-direction:column;cursor:pointer;
   transition:border-color .25s,box-shadow .25s;
   -webkit-tap-highlight-color:rgba(225,27,34,.22);
@@ -378,10 +383,10 @@ html.js .cat.in .cat-shot img,html.js .find-shot.in img{clip-path:inset(0)}
 .cat-wide .cat-b{flex:1;justify-content:center;padding:34px 38px}
 
 /* -------- фото с прилавка -------- */
-.counter-strip{background:var(--asphalt-2);padding:clamp(96px,13vh,130px) 0 clamp(34px,5vh,58px);overflow:hidden;
+.counter-strip{background:var(--paper);color:var(--ink);padding:clamp(96px,13vh,130px) 0 clamp(34px,5vh,58px);overflow:hidden;
   display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2.4vh,26px)}
 .counter-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:18px}
-.counter-t{font-family:var(--ui);font-weight:500;font-size:clamp(15px,1.5vw,19px);color:#fff}
+.counter-t{font-family:var(--ui);font-weight:500;font-size:clamp(15px,1.5vw,19px);color:var(--ink-2)}
 /* раскрытие ленты - тем же швом: кадр расходится от середины */
 .pstrip{overflow:hidden;
   clip-path:inset(0 calc(50% - 50% * var(--open,1)) 0 calc(50% - 50% * var(--open,1)));
@@ -391,8 +396,8 @@ html.no-plate .pstrip{clip-path:none}
 .pstrip-track{display:flex;gap:16px;width:max-content;animation:marq 46s linear infinite;padding:4px 0}
 .pstrip-track img{
   height:clamp(230px,min(58vh,40vw),560px);width:auto;border-radius:var(--rad);
-  filter:saturate(.92) contrast(1.05) brightness(.94);
-  border:1px solid var(--line-d);
+  filter:saturate(.98) contrast(1.03);
+  border:1px solid var(--line-l);
 }
 
 /* -------- марки -------- */
@@ -490,7 +495,8 @@ html.js .steps.lit .steps-road path{stroke-dashoffset:0}
 .review footer span{font-size:13px;color:var(--ink-2)}
 
 /* -------- как найти -------- */
-.find{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px)}
+/* карта стоит первой в блоке (правка клиента 02.09.2026), поэтому отступ у сетки фото сверху */
+.find{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);margin-top:clamp(14px,2vw,22px)}
 .find-shot{position:relative;border-radius:var(--rad);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow)}
 .find-shot img{width:100%;height:100%;object-fit:cover;filter:saturate(.98) contrast(1.05) brightness(.95);transition:transform .6s}
 .find-shot:hover img{transform:scale(1.05)}
@@ -500,8 +506,10 @@ html.js .steps.lit .steps-road path{stroke-dashoffset:0}
 }
 .find-sign{grid-column:span 2;aspect-ratio:auto}
 .find-sign img{object-position:50% 40%}
+/* тёмная плашка живёт и в светлой секции - цвет текста задаём явно,
+   иначе от .sec-light приходит тёмный --ink и адрес пропадает на тёмном фоне */
 .find-info{
-  grid-column:span 2;background:var(--panel);border-radius:var(--rad);padding:28px 30px;
+  grid-column:span 2;background:var(--panel);color:#fff;border-radius:var(--rad);padding:28px 30px;
   display:grid;grid-template-columns:1.25fr 1fr;gap:16px 34px;align-content:center;
   border:1px solid var(--line-d);
 }
