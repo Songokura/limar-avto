@@ -288,7 +288,7 @@ html.js .hw.up>span{transform:none}
 .hero-edge{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red)}
 
 /* -------- бегущая строка -------- */
-.ticker{background:var(--asphalt);border-bottom:1px solid var(--line-d);overflow:hidden;padding:15px 0}
+.ticker{background:var(--asphalt);border-bottom:1px solid var(--line-d);overflow:hidden;padding:9px 0}
 .ticker-track{display:flex;gap:0;width:max-content;animation:marq 34s linear infinite}
 .ticker-track b{
   font-family:var(--ui);font-weight:500;font-size:13px;letter-spacing:.18em;text-transform:uppercase;
@@ -516,7 +516,8 @@ html.js .steps.lit .steps-road path{stroke-dashoffset:0}
 .find-lines span::before{content:"";width:7px;height:7px;background:var(--red);flex:none}
 .find-cta{margin-top:auto;display:flex;flex-direction:column;gap:11px}
 .map{margin-top:clamp(18px,2.5vw,26px);border-radius:var(--rad);overflow:hidden;box-shadow:var(--shadow)}
-.map iframe{display:block;width:100%;height:clamp(300px,36vw,420px);border:0;filter:grayscale(.2) contrast(1.03)}
+/* 2ГИС-виджет не приглушаем: серый фильтр съедает оранжевую трассу и метку фирмы */
+.map iframe{display:block;width:100%;height:clamp(320px,38vw,460px);border:0;background:#F4EFE4}
 
 /* -------- футер -------- */
 .foot{background:#0B0E10;color:#fff;padding:clamp(46px,6vw,72px) 0 30px}
