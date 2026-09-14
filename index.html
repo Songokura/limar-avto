@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260902-5">
+<link rel="stylesheet" href="styles.css?v=20260914-1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoPartsStore","name":"LIMAR AVTO",
 "description":"Магазин автозапчастей Chevrolet, Renault, Lada в Уральске. Оригиналы и проверенные аналоги в наличии и на заказ.",
@@ -86,8 +86,6 @@
         <button type="button" data-lang="kk" aria-pressed="false" lang="kk">KZ</button>
       </div>
       <a class="hdr-tel" href="tel:+77055608735">+7 705 560-87-35</a>
-      <a class="btn btn-wa btn-sm hdr-wa" href="https://wa.me/77055608735" target="_blank" rel="noopener">
-        <svg class="i"><use href="#ic-wa"/></svg><span data-i="nav.wa">WhatsApp</span></a>
       <button class="burger" id="burger" data-i-aria="a.menu" aria-label="Меню" aria-expanded="false" aria-controls="mnav"><span></span></button>
     </div>
   </div>
@@ -120,7 +118,7 @@
   </div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="kicker rv" data-i="h.kick">Уральск · ул. Сырыма Датова, 49 · с 2016 года</p>
+      <p class="kicker rv" data-i="h.kick">Уральск · ул. Сырыма Датова, 49</p>
       <h1 id="h1"><span class="hw hw-s"><span class="h-brands">Chevrolet · Renault · Lada</span></span><br>
         <span class="hw d1"><span data-i="h.t1">Запчасти</span></span></h1>
       <p class="lead rv d2" data-i="h.lead">Оригинальные запчасти от официальных дилеров и качественные аналоги</p>
@@ -129,23 +127,25 @@
         <span class="hero-pill-tx" data-i="h.pill">Большой ассортимент деталей в наличии и под заказ</span>
         <span class="hero-pill-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
-      <a class="hero-note rv d3" href="#qform"><span data-i="h.note">Заполните форму и получите консультацию по подбору запчастей</span><i aria-hidden="true"></i></a>
+      <a class="hero-wa rv d3" href="https://wa.me/77055608735" target="_blank" rel="noopener">
+        <span class="hero-wa-ic" aria-hidden="true"><svg><use href="#ic-wa"/></svg></span>
+        <span class="hero-wa-tx"><b data-i="h.wa.h">Написать в WhatsApp напрямую</b><small data-i="h.wa.p">Без заявки - сразу менеджеру</small></span>
+        <span class="hero-wa-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
     </div>
 
-    <form class="qform rv d2" id="qform" novalidate aria-labelledby="qform-h">
-      <div class="qform-top">
-        <h2 id="qform-h" data-i="f.h">Оформить заявку</h2>
-      </div>
+    <form class="qform rv d2" id="qform" novalidate aria-labelledby="formNote">
       <div class="qform-body" id="qformBody">
+        <p class="qform-note" id="formNote"><span data-i="f.note">Заявка уйдёт в WhatsApp менеджеру. Ответим за 5-15 минут в рабочее время.</span><i aria-hidden="true"></i></p>
         <label class="fld"><span data-i="f.car">Марка и модель авто - или VIN / фрейм-код</span>
           <input type="text" name="car" data-i-ph="f.car.ph" placeholder="Lada Vesta 1.8, 2019 - или VIN" autocomplete="off"></label>
-        <label class="fld"><span data-i="f.part">Какая деталь нужна</span>
+        <label class="fld"><span data-i="f.part">Требуемая деталь или узел</span>
           <input type="text" name="part" id="partField" data-i-ph="f.part.ph" placeholder="Комплект сцепления LUK на Весту 1.8" autocomplete="off"></label>
         <label class="fld"><span data-i="f.tel">Номер телефона</span>
           <input type="tel" name="phone" placeholder="+7 ___ ___ __ __" inputmode="tel" autocomplete="tel"></label>
         <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
         <button type="submit" class="btn btn-wa btn-full"><svg class="i"><use href="#ic-wa"/></svg><span data-i="f.send">Отправить</span></button>
-        <p class="fnote" id="formNote" data-i="f.note">Заявка уйдёт в WhatsApp менеджеру. Ответим за 5-15 минут в рабочее время.</p>
+        <p class="fnote" id="formErr" role="alert" hidden></p>
       </div>
       <div class="qform-done" id="qformDone" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/></svg>
@@ -440,12 +440,18 @@
   </div>
 </footer>
 
+<!-- ПЛАВАЮЩАЯ КНОПКА WHATSAPP (от 761px) -->
+<a class="wa-float" id="waFloat" href="https://wa.me/77055608735" target="_blank" rel="noopener" data-i-aria="a.wa" aria-label="Написать в WhatsApp">
+  <span class="wa-float-tx"><b data-i="wf.h">Написать в WhatsApp</b><small data-i="wf.p">Ответим за 5-15 минут</small></span>
+  <span class="wa-float-ic" aria-hidden="true"><svg><use href="#ic-wa"/></svg></span>
+</a>
+
 <!-- ЛИПКАЯ НИЖНЯЯ ПАНЕЛЬ (мобайл) -->
 <div class="dock" id="dock">
   <a class="dock-tel" href="tel:+77055608735"><svg class="i"><use href="#ic-tel"/></svg><span data-i="dk.call">Позвонить</span></a>
   <a class="dock-wa" href="https://wa.me/77055608735" target="_blank" rel="noopener"><svg class="i"><use href="#ic-wa"/></svg>WhatsApp</a>
 </div>
 
-<script src="script.js?v=20260902-5"></script>
+<script src="script.js?v=20260914-1"></script>
 </body>
 </html>
