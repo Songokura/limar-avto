@@ -21,16 +21,16 @@ var KZ = {
 "a.menu":"Мәзір","a.smap":"Сайт бөлімдері","a.map":"2ГИС картасы: LIMAR AVTO, Ашық Жол базары",
 "mn.wa":"WhatsApp-қа жазу","mn.note":"Күн сайын 09:30 - 17:00 · Ашық Жол базары, 60-бутик",
 
-"h.kick":"Орал · Сырым Датов көшесі, 49",
+"h.kick":"Орал · Сырым Датов көшесі, 49 · 2016 жылдан бері",
 "h.t1":"Автобөлшектер",
 "h.lead":"Ресми дилерлердің түпнұсқа бөлшектері және сапалы аналогтар",
 "h.pill":"Бөлшектердің үлкен ассортименті: қоймада және тапсырыспен",
-"h.wa.h":"WhatsApp арқылы тікелей жазу","h.wa.p":"Өтінімсіз - бірден менеджерге",
-"wf.h":"WhatsApp арқылы жазу","wf.p":"5-15 минутта жауап береміз","a.wa":"WhatsApp арқылы жазу",
+"h.note":"Форманы толтырыңыз - бөлшек іріктеу бойынша кеңес аласыз",
 
+"f.h":"Өтінім қалдыру",
 "f.car":"Көліктің маркасы мен моделі - немесе VIN / фрейм-код",
 "f.car.ph":"Lada Vesta 1.8, 2019 - немесе VIN",
-"f.part":"Қажетті бөлшек немесе торап",
+"f.part":"Қандай бөлшек керек",
 "f.part.ph":"Веста 1.8-ге LUK ілінісу жинағы",
 "f.tel":"Телефон нөмірі",
 "f.send":"Жіберу",
@@ -131,9 +131,9 @@ var KZ = {
 /* служебные строки формы */
 var UI = {
  ru:{head:"Заявка с сайта LIMAR AVTO",car:"Авто",part:"Деталь",tel:"Телефон",
-     err:"Укажите деталь или узел и номер телефона."},
+     err:"Напишите, какая деталь нужна, и номер телефона."},
  kk:{head:"LIMAR AVTO сайтынан өтінім",car:"Көлік",part:"Бөлшек",tel:"Телефон",
-     err:"Бөлшекті немесе торапты және телефон нөмірін жазыңыз."}
+     err:"Қандай бөлшек керегін және телефон нөмірін жазыңыз."}
 };
 
 /* бегущая строка */
@@ -314,8 +314,7 @@ if (HAS_IO) {
 }
 
 /* ---------------- ШАПКА, ДОК ---------------- */
-var hdr = document.getElementById("hdr"), dock = document.getElementById("dock"),
-    waFloat = document.getElementById("waFloat");
+var hdr = document.getElementById("hdr"), dock = document.getElementById("dock");
 var prev = 0, ticking = false;
 function onScroll(){
   if (ticking) return; ticking = true;
@@ -327,8 +326,6 @@ function onScroll(){
       hdr.classList.toggle("hide", y > 300 && y > prev);
     }
     if (dock) dock.classList.toggle("show", y > innerHeight * .55);
-    /* плавающая кнопка - когда зелёная кнопка героя ушла из вида */
-    if (waFloat) waFloat.classList.toggle("show", y > innerHeight * .7);
     prev = y;
   });
 }
@@ -374,7 +371,7 @@ document.querySelectorAll(".cat").forEach(function(card){
 });
 
 /* ---------------- ФОРМА -> WHATSAPP ---------------- */
-var form = document.getElementById("qform"), note = document.getElementById("formErr");
+var form = document.getElementById("qform"), note = document.getElementById("formNote");
 if (form) form.addEventListener("submit", function(e){
   e.preventDefault();
   var f = new FormData(form);
@@ -383,10 +380,9 @@ if (form) form.addEventListener("submit", function(e){
       part = (f.get("part") || "").trim(),
       tel = (f.get("phone") || "").trim();
   if (!part || !tel) {
-    if (note) { note.textContent = T("err"); note.hidden = false; }
+    if (note) { note.textContent = T("err"); note.style.color = "#C8412F"; }
     return;
   }
-  if (note) note.hidden = true;
   var lines = [T("head")];
   if (car) lines.push(T("car") + ": " + car);
   lines.push(T("part") + ": " + part);
