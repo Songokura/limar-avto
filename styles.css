@@ -310,6 +310,9 @@ html.js .hw.up>span{transform:none}
 }
 .mark::before{content:"";width:34px;height:2px;background:currentColor;flex:none}
 .mark-dark{color:var(--red)}
+/* 18.09.2026: кикер ассортимента крупнее по просьбе клиента */
+#assortiment .mark{font-size:clamp(13.5px,1.15vw,16px);gap:14px}
+#assortiment .mark::before{width:44px}
 .sec-head h2{
   font-family:var(--disp);font-weight:700;font-size:clamp(36px,5.2vw,70px);
   line-height:.98;letter-spacing:.005em;margin-top:16px;text-transform:uppercase;
