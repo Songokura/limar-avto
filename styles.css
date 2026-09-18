@@ -531,12 +531,6 @@ html.js .steps.lit .steps-road path{stroke-dashoffset:0}
 .find-shot{position:relative;border-radius:var(--rad);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow);margin:0}
 .find-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.98) contrast(1.05) brightness(.95);transition:transform .6s}
 .find-shot:hover img{transform:scale(1.05)}
-.find-shot figcaption{
-  position:absolute;left:12px;bottom:12px;right:12px;width:max-content;max-width:calc(100% - 24px);
-  background:rgba(15,18,21,.88);color:#fff;
-  font-size:12.5px;font-weight:500;line-height:1.3;border-radius:var(--rad-s);padding:7px 12px;
-}
-.find-main figcaption{font-size:14px;padding:9px 14px;left:16px;bottom:16px}
 
 /* -------- футер -------- */
 .foot{background:#0B0E10;color:#fff;padding:clamp(46px,6vw,72px) 0}
@@ -632,8 +626,6 @@ section[id],article[id]{scroll-margin-top:100px}
   .find-top{grid-template-columns:1fr}
   .map{min-height:300px}
   .find-shot.find-main{aspect-ratio:4/3}
-  .find-shot figcaption{font-size:11.5px;left:8px;bottom:8px;max-width:calc(100% - 16px);padding:6px 9px}
-  .find-main figcaption{font-size:13px;left:12px;bottom:12px}
   .hero-pill{gap:12px;padding:13px 14px}
   .hero-pill-ic{width:26px;height:26px}
   .hero-pill-go{width:34px;height:34px}
