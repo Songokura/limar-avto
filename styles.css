@@ -380,7 +380,7 @@ html.js .cat.in .cat-shot img,html.js .find-shot.in img{clip-path:inset(0)}
 .cat-wide .cat-b{flex:1;justify-content:center;padding:34px 38px}
 /* Двигатели: код мотора слева, модели справа, строки клиента - группами.
    Одна сетка на весь список, чтобы колонка моделей шла по одной вертикали. */
-.cat-b .eng-lead{margin-top:14px;font-weight:600;color:var(--ink)}
+.cat-b .eng-lead{margin-top:14px;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .eng{margin-top:12px;width:100%;display:grid;grid-template-columns:max-content 1fr}
 .eng-g,.eng-r{display:contents}
 .eng dt,.eng dd{padding:7px 0;line-height:1.3}
