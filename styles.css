@@ -292,12 +292,11 @@ html.js .hw.up>span{transform:none}
 }
 .ticker-track b::after{content:"";width:7px;height:7px;margin:0 24px;flex:none;
   background:var(--red);transform:rotate(45deg)}
-@keyframes marq{to{transform:translateX(-50%)}}
 /* Ленты, которые собирает loopTrack: шаг равен ровно одной копии списка (--marq).
    Так дорожка остаётся короткой - раньше она дублировалась целиком и на широком
    мониторе разрасталась до 5800px, что Chrome разбивает на тайлы с артефактами. */
 @keyframes marq-x{to{transform:translateX(calc(-1 * var(--marq,50%)))}}
-@media (prefers-reduced-motion:reduce){.ticker-track,.marq-track,.pstrip-track{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.ticker-track,.marq-track{animation:none!important}}
 
 /* -------- секции -------- */
 .sec{padding:clamp(64px,8vw,110px) 0;position:relative}
@@ -379,23 +378,26 @@ html.js .cat.in .cat-shot img,html.js .find-shot.in img{clip-path:inset(0)}
 .cat-wide.cat-render .cat-shot{min-height:380px}
 .cat-wide .cat-shot{flex:1.15;aspect-ratio:auto;min-height:280px}
 .cat-wide .cat-b{flex:1;justify-content:center;padding:34px 38px}
-
-/* -------- фото с прилавка -------- */
-.counter-strip{background:var(--paper);color:var(--ink);padding:clamp(64px,9vh,104px) 0;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2.4vh,26px)}
-.counter-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:18px}
-.counter-t{font-family:var(--ui);font-weight:500;font-size:clamp(15px,1.5vw,19px);color:var(--ink-2)}
-/* раскрытие ленты - тем же швом: кадр расходится от середины */
-.pstrip{overflow:hidden;
-  clip-path:inset(0 calc(50% - 50% * var(--open,1)) 0 calc(50% - 50% * var(--open,1)));
-  -webkit-mask:linear-gradient(90deg,transparent,#000 6% 94%,transparent);
-          mask:linear-gradient(90deg,transparent,#000 6% 94%,transparent)}
-html.no-plate .pstrip{clip-path:none}
-.pstrip-track{display:flex;gap:16px;width:max-content;animation:marq 46s linear infinite;padding:4px 0}
-.pstrip-track img{
-  height:clamp(230px,min(58vh,40vw),560px);width:auto;border-radius:var(--rad);
-  filter:saturate(.98) contrast(1.03);
-  border:1px solid var(--line-l);
+/* Двигатели: код мотора слева, модели справа, строки клиента - группами.
+   Одна сетка на весь список, чтобы колонка моделей шла по одной вертикали. */
+.eng{margin-top:16px;width:100%;display:grid;grid-template-columns:max-content 1fr}
+.eng-g,.eng-r{display:contents}
+.eng dt,.eng dd{padding:7px 0;line-height:1.3}
+.eng .eng-r:first-child dt,.eng .eng-r:first-child dd{border-top:1px solid var(--line-l);padding-top:11px}
+.eng .eng-g:first-child .eng-r:first-child dt,.eng .eng-g:first-child .eng-r:first-child dd{border-top:0;padding-top:0}
+.eng .eng-r:last-child dt,.eng .eng-r:last-child dd{padding-bottom:11px}
+.eng dt{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.03em;color:var(--ink);white-space:nowrap;
+  display:flex;align-items:baseline;gap:9px}
+.eng dt::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);flex:none;transform:translateY(-2px)}
+.eng dt{padding-right:22px}
+.eng dd{font-size:14.5px;font-weight:500;color:var(--ink-2)}
+/* в узкой колонке карточки модели уходят под код мотора */
+@media (max-width:1100px){
+  .eng{grid-template-columns:1fr}
+  .eng dt{padding-right:0}
+  .eng dd{padding-top:0;padding-left:15px}
+  .eng .eng-r dt,.eng .eng-r:last-child dt{padding-bottom:3px}
+  .eng .eng-r:first-child dd{border-top:0;padding-top:0}
 }
 
 /* -------- марки -------- */

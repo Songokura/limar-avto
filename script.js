@@ -44,7 +44,6 @@ var KZ = {
 "c2.h":"Қозғалтқыш жөндеуге арналған бөлшектер",
 "c2.p":"Поршеньдер, сақиналар, жапсырмалар, ГБЦ, тығыздағыштар, ГРМ жинақтары, помпалар.",
 "c3.h":"Әртүрлі модель мен жинақтағы қозғалтқыштар",
-"c3.p":"ВАЗ 1.6 / 1.8, Renault K4M / K7M / H4M, Chevrolet жиналған қозғалтқыштары - қоймада және тапсырыспен.",
 "c4.h":"Трансмиссия",
 "c4.p":"LUK және Valeo ілінісу жинақтары, сығымдау подшипниктері, КПП тісті дөңгелектері мен біліктері.",
 "c5.h":"Жүріс бөлігі",
@@ -59,8 +58,6 @@ var KZ = {
 "logo.sub":"Орал қ., Сырым Датов көшесі, 49<br>2016 жылдан бері жұмыс істейміз",
 "logo.top":"Орал · 2016 жылдан бері",
 
-"s2.m":"сөрелерден",
-"s2.t":"60-бутиктен тірі фото - дәл қазір сөрелерде жатқан тауар",
 
 "s3.m":"маркалар мен модельдер",
 "s3.h1":"Сіздің көлігіңіз - біздің сала.","s3.h2":"Үш марка, он жеті модель.",
@@ -116,13 +113,6 @@ var KZ = {
 "alt.in":"Павильон ішіндегі 60-бутик: сатушы үстелі жанындағы сатып алушылар",
 "alt.pav":"Ашық Жол базарының жабық павильоны және алдындағы тұрақ",
 "alt.cnt":"60-бутиктегі сатушы үстелі мен бөлшек сөрелері",
-"alt.p1":"LIMAR AVTO сөресі: майлар мен шығын материалдары",
-"alt.p2":"Сөредегі Gates PowerGrip ГРМ жинақтары",
-"alt.p3":"Түпнұсқа LADA КПП тісті дөңгелектері",
-"alt.p4":"Орамдағы амортизация тіреуіштері",
-"alt.p5":"Valeo ілінісу жинақтары",
-"alt.p6":"Chevrolet Cobalt үшін UzChasys фаралары",
-"alt.p7":"Қоймадағы SUFIX бөлшектері"
 };
 
 /* служебные строки формы */
@@ -234,25 +224,15 @@ addEventListener("resize", function(){
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(function(){ fillTicker(); fillBrands(); });
 }
-/* дублируем ленту фото для бесшовного прогона */
-(function loopStrip(){
-  var el = document.getElementById("pstrip"); if (!el) return;
-  el.innerHTML += el.innerHTML;
-  el.querySelectorAll("img").forEach(function(i){ i.setAttribute("aria-hidden", "true"); });
-})();
-
 /* ---------------- ПЛИТЫ ----------------
    Стандарт студии от 01.09.2026. Один слушатель scroll через rAF,
    на каждую обёртку .pw пишем три числа; всё остальное делает CSS
-   через calc. Раскрытие «от середины» осталось только у ленты фото:
-   шов в герое клиент снял 02.09.2026. */
+   через calc. */
 (function plates(){
   var pws = [].slice.call(document.querySelectorAll(".pw"));
   if (!pws.length) return;
   if (RED) { document.documentElement.classList.add("no-plate"); return; }
-  var strip = document.querySelector(".pstrip");
   function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
-  function easeOut(t){ return 1 - Math.pow(1 - t, 2.2); }
   function update(){
     var H = window.innerHeight || document.documentElement.clientHeight;
     pws.forEach(function(pw){
@@ -265,10 +245,6 @@ if (document.fonts && document.fonts.ready) {
       pw.style.setProperty("--stay",  stay.toFixed(3));
       pw.classList.toggle("gone", exit >= 1);
       pw.classList.toggle("on", enter > 0.72);
-      /* лента фото раскрывается швом от середины */
-      if (strip && pw.contains(strip)) {
-        strip.style.setProperty("--open", easeOut(clamp((enter - 0.28) / 0.5)).toFixed(3));
-      }
     });
   }
   var tick = false;
