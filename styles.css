@@ -357,8 +357,8 @@ html.js .cat.in .cat-shot img,html.js .find-shot.in img{clip-path:inset(0)}
 .cat-b{padding:22px 24px 22px;position:relative;flex:1;display:flex;flex-direction:column;align-items:flex-start}
 .cat-b h3{font-family:var(--disp);font-weight:700;font-size:27px;letter-spacing:.01em;text-transform:uppercase;line-height:1}
 .cat-b p{margin-top:9px;font-size:14.5px;color:var(--ink-2)}
-/* перечни позиций клиент просит капсом (и в KZ, поэтому через CSS) */
-.cat-b p.caps{text-transform:uppercase;font-weight:500;letter-spacing:.02em;line-height:1.55}
+/* описания карточек ассортимента - капсом по просьбе клиента (и в KZ, поэтому через CSS) */
+.cat-b p{text-transform:uppercase;font-weight:500;letter-spacing:.02em;line-height:1.55}
 .cat-cta{
   margin-top:18px;font-family:var(--ui);font-weight:600;font-size:13px;letter-spacing:.08em;
   color:var(--ink);border:1.5px solid var(--ink);border-radius:var(--rad-s);padding:11px 18px;
