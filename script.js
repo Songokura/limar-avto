@@ -18,6 +18,7 @@ var KZ = {
 "nav.1":"Ассортимент","nav.2":"Маркалар","nav.4":"Жұмыс тәртібі",
 "nav.5":"Пікірлер","nav.6":"Мекенжай","nav.wa":"WhatsApp",
 "a.home":"LIMAR AVTO, басты бетке","a.nav":"Негізгі навигация","a.lang":"Сайт тілі",
+"a.prev":"Алдыңғы пікір","a.next":"Келесі пікір","a.revs":"Клиенттердің пікірлері",
 "a.menu":"Мәзір","a.smap":"Сайт бөлімдері","a.map":"2ГИС картасы: LIMAR AVTO, Ашық Жол базары",
 "mn.wa":"WhatsApp-қа жазу","mn.note":"Күн сайын 09:30 - 17:00 · Ашық Жол базары, 60-бутик",
 
@@ -361,6 +362,35 @@ if (form) form.addEventListener("submit", function(e){
   if (body && done) { body.hidden = true; done.hidden = false; }
   form.reset();
 });
+
+/* ---------------- ЛЕНТА ОТЗЫВОВ ----------------
+   Стрелки обязательны: на десктопе обрезанная справа карточка читается как битая вёрстка,
+   а свайп - подсказка для пальца, не для курсора. Шаг - ровно одна карточка. */
+(function(){
+  var strip = document.getElementById("revStrip"), nav = document.getElementById("revNav");
+  if (!strip || !nav) return;
+  var btns = nav.querySelectorAll(".rnav");
+  function step(){
+    var c = strip.firstElementChild; if (!c) return strip.clientWidth;
+    var gap = parseFloat(getComputedStyle(strip).columnGap || getComputedStyle(strip).gap) || 0;
+    return c.getBoundingClientRect().width + gap;
+  }
+  function upd(){
+    var max = strip.scrollWidth - strip.clientWidth;
+    nav.hidden = max < 8;                       /* всё влезло - кнопки не нужны */
+    btns[0].disabled = strip.scrollLeft <= 4;
+    btns[1].disabled = strip.scrollLeft >= max - 4;
+  }
+  btns.forEach(function(b){
+    b.addEventListener("click", function(){
+      strip.scrollBy({left: step() * (+b.dataset.dir), behavior: RED ? "auto" : "smooth"});
+    });
+  });
+  strip.addEventListener("scroll", upd, {passive:true});
+  addEventListener("resize", upd);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(upd);
+  upd();
+})();
 
 /* ---------------- ДЕЛЕГИРОВАННЫЕ КЛИКИ tel/WhatsApp ----------------
    (сюда позже вешаются конверсии gtag) */

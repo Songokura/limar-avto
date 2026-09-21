@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260921-2">
+<link rel="stylesheet" href="styles.css?v=20260921-3">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoPartsStore","name":"LIMAR AVTO",
 "description":"Магазин автозапчастей Chevrolet, Renault, Lada в Уральске. Оригиналы и проверенные аналоги в наличии и на заказ.",
@@ -393,7 +393,13 @@
       <span class="mark rv"><span data-i="s7.m">отзывы</span></span>
       <h2 class="rv d1"><span data-i="s7.h1">Нас советуют на картах Google.</span> <span class="h-acc" data-i="s7.h2">Рейтинг 4,6 · 32 отзыва.</span></h2>
     </div>
-    <div class="reviews">
+    <div class="rev-bar rv d1">
+      <div class="rev-nav" id="revNav" hidden>
+        <button class="rnav rnav-prev" type="button" data-dir="-1" data-i-aria="a.prev" aria-label="Предыдущий отзыв" aria-controls="revStrip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button class="rnav" type="button" data-dir="1" data-i-aria="a.next" aria-label="Следующий отзыв" aria-controls="revStrip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="reviews" id="revStrip" tabindex="0" role="group" data-i-aria="a.revs" aria-label="Отзывы клиентов">
       <blockquote class="review rv">
         <span class="stars" aria-label="5 из 5"><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg></span>
         <p>«Большой выбор. Есть практически все расходники».</p>
@@ -403,6 +409,11 @@
         <span class="stars" aria-label="5 из 5"><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg></span>
         <p>«Место очень хорошее, цены доступные, запчасти заводские. Рекомендую всем».</p>
         <footer><b>Серик Муканов</b><span>Google Карты</span></footer>
+      </blockquote>
+      <blockquote class="review rv">
+        <span class="stars" aria-label="5 из 5"><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg><svg><use href="#ic-star"/></svg></span>
+        <p>«Установил противотуманки, пришлось занижать так как бьёт выше, свет очень яркий».</p>
+        <footer><b>Егор Иванов</b><span>Google Карты</span></footer>
       </blockquote>
     </div>
     <a class="btn btn-g rv d1" href="https://maps.app.goo.gl/YuSShh55C8fdtLTe6" target="_blank" rel="noopener" data-i="s7.all">Все отзывы в Google</a>
@@ -449,6 +460,6 @@
   <a class="dock-wa" href="https://wa.me/77055608735" target="_blank" rel="noopener"><svg class="i"><use href="#ic-wa"/></svg>WhatsApp</a>
 </div>
 
-<script src="script.js?v=20260921-2"></script>
+<script src="script.js?v=20260921-3"></script>
 </body>
 </html>

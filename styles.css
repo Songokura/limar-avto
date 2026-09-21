@@ -458,8 +458,29 @@ html.js .steps.lit .steps-road path{stroke-dashoffset:0}
 .step p{margin-top:7px;font-size:14px;color:var(--mut)}
 
 /* -------- отзывы -------- */
-.reviews{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,24px);margin-bottom:28px}
+/* лента отзывов: горизонтальная прокрутка + кнопки листания (правило от 08.09.2026) */
+.rev-bar{display:flex;justify-content:flex-end;margin-bottom:16px}
+.rev-nav{display:flex;gap:10px}
+/* без этой строки display:flex из правила выше перебьёт атрибут hidden */
+.rev-nav[hidden]{display:none}
+.rnav{
+  width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;cursor:pointer;
+  background:var(--card);border:1px solid var(--line-l);color:var(--ink);
+  transition:border-color .25s,color .25s,opacity .25s;
+}
+.rnav svg{width:20px;height:20px}
+.rnav-prev svg{transform:rotate(180deg)}
+.rnav:hover:not(:disabled){border-color:var(--red);color:var(--red)}
+.rnav:disabled{opacity:.32;cursor:default}
+.reviews{
+  display:flex;gap:clamp(14px,2vw,24px);margin-bottom:28px;
+  overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:0;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.reviews::-webkit-scrollbar{display:none}
+.reviews:focus-visible{outline:2px solid var(--red);outline-offset:6px;border-radius:var(--rad)}
 .review{
+  flex:0 0 clamp(280px,32%,400px);scroll-snap-align:start;
   background:var(--card);border-radius:var(--rad);padding:26px 28px;border:1px solid var(--line-l);
   border-left:3px solid var(--red);display:flex;flex-direction:column;gap:14px;
 }
@@ -566,7 +587,7 @@ section[id],article[id]{scroll-margin-top:100px}
   .hero-grid{grid-template-columns:1fr;gap:34px}
   .hero{padding:124px 0 40px}
   .qform{max-width:560px}
-  .reviews{grid-template-columns:1fr}
+  .review{flex-basis:min(78%,380px)}
   .steps{grid-template-columns:repeat(2,1fr);row-gap:34px}
   .steps-road{display:none}
   .find-cta{grid-template-columns:1fr}
