@@ -63,6 +63,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* .find-info - тёмная плашка, и на светлой секции тоже: кнопка внутри неё светлая */
 .sec-light .find-info .btn-g{border-color:var(--line-d);color:#fff}
 .sec-light .find-info .btn-g:hover{border-color:var(--red-2);color:var(--red-2)}
+/* тёмная плашка внутри светлой секции - кнопка должна остаться светлой */
+.sec-light .khelp .btn-g{border-color:var(--line-d);color:#fff}
+.sec-light .khelp .btn-g:hover{border-color:var(--red-2);color:var(--red-2)}
 .btn-sm{padding:10px 16px;font-size:12.5px;border-radius:var(--rad-s)}
 .btn-full{width:100%}
 
