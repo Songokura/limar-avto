@@ -65,6 +65,7 @@ var q = document.getElementById("kq"), list = document.getElementById("klist"),
 if (!q || !list) return;
 
 var state = {q:"", sheet:"", only:false, off:{}, items:[], busy:false, seq:0};
+var seen = {};
 
 /* ---------------- gviz ---------------- */
 function esc(s){ return String(s).replace(/'/g, "''"); }
@@ -205,7 +206,7 @@ function run(reset){
     more.hidden = true; setNote(t("find"));
     return;
   }
-  if (reset) { state.off = {}; state.items = []; list.innerHTML = ""; }
+  if (reset) { state.off = {}; state.items = []; seen = {}; list.innerHTML = ""; }
   var my = ++state.seq;
   state.busy = true; more.disabled = true;
   setNote(t("load"));
@@ -223,11 +224,24 @@ function run(reset){
       if (r.rows.length === PAGE) hasMore = true;
       got += r.rows.length;
       r.rows.forEach(function(row){
-        state.items.push({art:cell(row,0), art2:cell(row,1), name:cell(row,2),
-                          brand:cell(row,3), unit:cell(row,4), stock:cell(row,5), price:cell(row,6)});
+        var it = {art:cell(row,0), art2:cell(row,1), name:cell(row,2),
+                  brand:cell(row,3), unit:cell(row,4), stock:cell(row,5), price:cell(row,6)};
+        /* одна и та же деталь лежит и в LADA, и в LargusRenault - показываем один раз */
+        var key = (it.art || it.art2) + "|" + it.name + "|" + it.brand;
+        if (seen[key]) return;
+        seen[key] = 1;
+        state.items.push(it);
       });
     });
-    state.items.sort(function(a,b){ return a.name.localeCompare(b.name, "ru"); });
+    /* Сначала то, где слово стоит в начале названия: по запросу «колодка» человек ждёт
+       тормозные колодки, а не «Клеммы (колодка гнездовая…)». */
+    var key0 = variants(words[0].toLowerCase())[0];
+    state.items.sort(function(a, b){
+      var ia = a.name.toLowerCase().indexOf(key0), ib = b.name.toLowerCase().indexOf(key0);
+      if (ia < 0) ia = 999; if (ib < 0) ib = 999;
+      if (ia !== ib) return ia - ib;
+      return a.name.localeCompare(b.name, "ru");
+    });
     render();
     more.hidden = !hasMore; more.disabled = false;
     setNote(state.items.length ? (hasMore ? t("more").replace(/^ · /, "") : "") : t("none"), state.items.length ? "" : "is-empty");
