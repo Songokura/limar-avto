@@ -10,7 +10,7 @@
 
 /* ID Google-таблицы «LIMAR AVTO - каталог запчастей (сайт)».
    Доступ у таблицы: «Все, у кого есть ссылка - Читатель». */
-var SHEET = "PASTE_SHEET_ID";
+var SHEET = "1L0bkWWsTGxzy5oB5_ZGCb9og0mEWHs3Q-Jm45pG5XXA";
 
 var SHEETS = ["LADA", "LargusRenault", "Chevrolet"];
 var PAGE = 40;                 /* позиций за один запрос к листу */
@@ -89,13 +89,51 @@ function cell(row, i){
   return (v === undefined || v === null) ? "" : String(v).trim();
 }
 
+/* В прайсе модели написаны латиницей («Granta», «Cobalt»), а ищут их кириллицей -
+   поэтому каждое слово разворачиваем в пару вариантов. Работает в обе стороны:
+   «Ларгус» в прайсе чаще кириллицей, а набирают «largus». */
+var SYN = {
+"гранта":"granta","granta":"гранта","веста":"vesta","vesta":"веста","ларгус":"largus","largus":"ларгус",
+"нива":"niva","niva":"нива","калина":"kalina","kalina":"калина","приора":"priora","priora":"приора",
+"логан":"logan","logan":"логан","дастер":"duster","duster":"дастер","сандеро":"sandero","sandero":"сандеро",
+"каптур":"kaptur","kaptur":"каптур","кобальт":"cobalt","cobalt":"кобальт","круз":"cruze","cruze":"круз",
+"авео":"aveo","aveo":"авео","нексия":"nexia","nexia":"нексия","лачетти":"lacetti","ласетти":"lacetti",
+"lacetti":"лачетти","матиз":"matiz","matiz":"матиз","спарк":"spark","spark":"спарк","каптива":"captiva",
+"captiva":"каптива","орландо":"orlando","orlando":"орландо","трекер":"tracker","tracker":"трекер",
+"джентра":"gentra","gentra":"джентра","шевроле":"chevrolet","chevrolet":"шевроле","рено":"renault",
+"renault":"рено","лада":"lada","lada":"лада","меган":"megane","megane":"меган","оникс":"onix","onix":"оникс",
+"дамас":"damas","damas":"дамас","дэу":"daewoo","daewoo":"дэу","равон":"ravon","ravon":"равон",
+"клио":"clio","clio":"клио","степвей":"stepway","stepway":"степвей","флюенс":"fluence","fluence":"флюенс",
+"трейлблейзер":"trailblazer","эпика":"epica","лабо":"labo","икс-рей":"x-ray","иксрей":"x-ray"
+};
+/* Грубый стеммер: «колодки» -> «колодк», «тормозные» -> «тормозн».
+   Без него поиск по обычной фразе почти всегда даёт пусто - в прайсе единственное число. */
+var VOW = "аеёийоуыьюя";
+function stem(w){
+  var s = w;
+  if (s.length < 5) return s;
+  for (var i = 0; i < 2; i++){
+    if (s.length > 4 && VOW.indexOf(s.charAt(s.length - 1)) >= 0) s = s.slice(0, -1); else break;
+  }
+  return s;
+}
+function variants(w){
+  var out = [stem(w)];
+  [SYN[w], SYN[stem(w)]].forEach(function(v){ if (v && out.indexOf(v) < 0) out.push(v); });
+  return out;
+}
+
 /* Колонки листа: A № · B Код · C Артикул · D Арт. поставщика · E Товар
    F Бренд · G ЕИ · H Остаток · I Цена */
 function query(words, only, off){
   var w = [];
   words.forEach(function(x){
-    var s = esc(x.toLowerCase());
-    w.push("(lower(E) like '%" + s + "%' or lower(C) like '%" + s + "%' or lower(D) like '%" + s + "%')");
+    var or = [];
+    variants(x.toLowerCase()).forEach(function(v){
+      var s = esc(v);
+      or.push("lower(E) like '%" + s + "%'", "lower(C) like '%" + s + "%'", "lower(D) like '%" + s + "%'");
+    });
+    w.push("(" + or.join(" or ") + ")");
   });
   if (only) w.push("H = '+'");
   return "select C,D,E,F,G,H,I" + (w.length ? " where " + w.join(" and ") : "") +
