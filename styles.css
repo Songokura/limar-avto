@@ -639,7 +639,7 @@ section[id],article[id]{scroll-margin-top:100px}
 }
 
 /* ================= КАТАЛОГ (katalog.html) ================= */
-.body-kat .kat-top{padding-top:calc(clamp(60px,7vw,96px) + 76px)}
+.body-kat .kat-top{padding-top:calc(clamp(60px,7vw,96px) + 76px);padding-bottom:clamp(30px,3.4vw,46px)}
 .crumbs{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--mut);margin-bottom:clamp(18px,2.4vw,28px)}
 .crumbs a{color:var(--mut)}
 .crumbs a:hover{color:#fff}
