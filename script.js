@@ -291,14 +291,14 @@ if (HAS_IO) {
 
 /* ---------------- ШАПКА, ДОК ---------------- */
 var hdr = document.getElementById("hdr"), dock = document.getElementById("dock");
-var prev = 0, ticking = false;
+var prev = 0, ticking = false, lockHdr = false;
 function onScroll(){
   if (ticking) return; ticking = true;
   requestAnimationFrame(function(){
     ticking = false;
     var y = scrollY || document.documentElement.scrollTop;
     hdr.classList.toggle("solid", y > 12);
-    if (!document.body.classList.contains("menu-open")) {
+    if (!document.body.classList.contains("menu-open") && !lockHdr) {
       hdr.classList.toggle("hide", y > 300 && y > prev);
     }
     if (dock) dock.classList.toggle("show", y > innerHeight * .55);
@@ -325,6 +325,84 @@ if (burger) {
     });
   });
 }
+
+/* ---------------- ПЕРЕХОД ПО ЯКОРЯМ ----------------
+   Нативный переход ставит под шапку ВЕРХ секции вместе с её верхним отступом:
+   человек видит пустую полосу и только под ней заголовок. Считаем цель сами -
+   отступ секции съедаем, оставляя немного воздуха. Абсолютную высоту берём
+   цепочкой offsetTop: на неё, в отличие от getBoundingClientRect, не влияет
+   reveal-сдвиг translateY у ещё не проявленных блоков. */
+var AIR = 20;
+function absTop(el){ var y = 0; while (el) { y += el.offsetTop; el = el.offsetParent; } return y; }
+function anchorY(el){
+  var h = hdr ? hdr.offsetHeight : 0, y = absTop(el);
+  if (el.classList.contains("sec")) y += parseFloat(getComputedStyle(el).paddingTop) || 0;
+  y = y - h - AIR;
+  var max = document.documentElement.scrollHeight - innerHeight;
+  return Math.max(0, Math.min(y, max));
+}
+/* человек крутит колесо/палец - значит перехват отменяем и в его скролл не лезем */
+var lastUser = 0;
+function touched(){
+  lastUser = Date.now();
+  if (lockHdr) { lockHdr = false; prev = scrollY || 0; }   /* человек крутит сам - не мешаем */
+}
+addEventListener("wheel", touched, {passive:true});
+addEventListener("touchmove", touched, {passive:true});
+
+function goAnchor(id, push){
+  var el = id && document.getElementById(id);
+  if (!el) return false;
+  if (hdr) hdr.classList.remove("hide");
+  lockHdr = true;                       /* пока летим, шапку не прячем - иначе цель уедет */
+  lastUser = 0;
+  scrollTo({top: anchorY(el), behavior: RED ? "auto" : "smooth"});
+  /* Ждём, пока страница реально остановится НА ЦЕЛИ: до дальней секции плавный
+     скролл летит больше секунды, и если отпустить шапку раньше, она спрячется
+     прямо в полёте - над заголовком останется пустая полоса. Заодно добираем
+     разницу, если выше догрузилась картинка и сдвинула раскладку. */
+  var last = -1, tries = 0;
+  (function settle(){
+    var now = Math.round(scrollY || 0), y = anchorY(el);
+    /* позиция перестала меняться - полёт кончился (или встал от сдвига раскладки);
+       tries > 3, потому что плавный скролл стартует не сразу */
+    var done = RED || (now === last && tries > 3);
+    if (done || tries > 40 || Date.now() - lastUser < 400) {
+      if (!lastUser && Math.abs(now - y) > 2) scrollTo({top:y, behavior:"auto"});
+      /* держим шапку ещё секунду: сразу после посадки догружается картинка,
+         браузер сам подправляет прокрутку (scroll anchoring) - и шапка
+         принимает этот сдвиг за «человек листает вниз» и прячется */
+      setTimeout(function(){ lockHdr = false; prev = scrollY || 0; }, 900);
+      /* контрольная сверка: на свежезагруженной странице картинка выше может
+         догрузиться уже после посадки и утащить цель на сотню пикселей */
+      setTimeout(function(){
+        if (Date.now() - lastUser < 600) return;
+        var y2 = anchorY(el);
+        if (Math.abs((scrollY || 0) - y2) > 4) {
+          if (hdr) hdr.classList.remove("hide");
+          scrollTo({top:y2, behavior:"auto"});
+          prev = scrollY || 0;
+        }
+      }, 550);
+      return;
+    }
+    last = now; tries++;
+    setTimeout(settle, 70);
+  })();
+  if (push && history.replaceState) history.replaceState(null, "", "#" + id);
+  return true;
+}
+window.limarGoAnchor = goAnchor;
+document.addEventListener("click", function(ev){
+  var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+  if (!a) return;
+  var href = a.getAttribute("href");
+  if (!href || href.length < 2) return;
+  if (goAnchor(href.slice(1), true)) ev.preventDefault();
+});
+addEventListener("load", function(){
+  if (location.hash.length > 1) setTimeout(function(){ goAnchor(location.hash.slice(1), false); }, 80);
+});
 
 /* ---------------- ПЛИТКИ АССОРТИМЕНТА ----------------
    Кликается вся карточка, не только кнопка: со смартфона это очевиднее. */

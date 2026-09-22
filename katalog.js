@@ -279,7 +279,9 @@ segs.querySelectorAll("button").forEach(function(b){
 document.getElementById("kquick").querySelectorAll("button").forEach(function(b){
   b.addEventListener("click", function(){
     q.value = b.dataset.q; clear.hidden = false; state.q = b.dataset.q; run(true);
-    document.getElementById("rezultaty").scrollIntoView({behavior:"smooth", block:"start"});
+    /* переход считает script.js - тот же расчёт, что у пунктов меню */
+    if (window.limarGoAnchor) window.limarGoAnchor("rezultaty", false);
+    else document.getElementById("rezultaty").scrollIntoView({behavior:"smooth", block:"start"});
   });
 });
 
