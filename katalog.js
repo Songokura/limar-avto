@@ -66,7 +66,7 @@ var q = document.getElementById("kq"), list = document.getElementById("klist"),
     segs = document.getElementById("kbrand");
 if (!q || !list) return;
 
-var state = {q:"", sheet:"", only:false, off:{}, items:[], busy:false, seq:0, words:[]};
+var state = {q:"", sheet:"", only:false, off:{}, items:[], busy:false, seq:0, step:0};
 var seen = {};
 
 /* ---------------- gviz ---------------- */
@@ -201,14 +201,24 @@ function setNote(s, cls){ note.textContent = s || ""; note.className = "knote" +
 /* ---------------- поиск ---------------- */
 function sheetsNow(){ return state.sheet ? [state.sheet] : SHEETS; }
 
-/* В прайсе названия короткие («Колодка задняя»), а человек пишет фразой
-   («колодки тормозные задние»). Слова соединяются через and, и лишнее слово
-   обнуляет выдачу. Поэтому: пусто по всей фразе - отбрасываем последнее слово
-   и ищем снова, пока что-то не найдётся; чем искали, пишем под счётчиком. */
-function run(reset, words){
+/* В прайсе названия короткие («Колодка задняя Granta»), а человек пишет фразой
+   («колодки тормозные задние гранта»). Слова соединяются через and, и одно лишнее
+   слово обнуляет выдачу. Поэтому если по фразе пусто - пробуем ступеньками:
+   деталь + модель (первое и последнее слово), потом одну деталь. Первое слово
+   обычно и есть деталь, последнее - модель, поэтому середину отбрасываем первой.
+   Чем в итоге искали, пишем под счётчиком. */
+function ladder(all){
+  var out = [all];
+  if (all.length > 2) out.push([all[0], all[all.length - 1]]);
+  if (all.length > 1) out.push([all[0]]);
+  return out;
+}
+function run(reset, step){
   var all = state.q.split(/\s+/).filter(Boolean);
-  words = words || all;
-  state.words = words;
+  var steps = ladder(all);
+  step = step || 0;
+  var words = steps[step] || all;
+  state.step = step;
   if (!all.length) {
     state.items = []; list.innerHTML = ""; cnt.textContent = "";
     more.hidden = true; setNote(t("find"));
@@ -250,15 +260,15 @@ function run(reset, words){
       if (ia !== ib) return ia - ib;
       return a.name.localeCompare(b.name, "ru");
     });
-    if (!state.items.length && words.length > 1) {     /* фраза не нашлась - ищем без последнего слова */
+    if (!state.items.length && step + 1 < steps.length) {   /* фраза не нашлась - следующая ступенька */
       state.busy = false;
-      run(true, words.slice(0, -1));
+      run(true, step + 1);
       return;
     }
     render();
     more.hidden = !hasMore; more.disabled = false;
     var note = state.items.length ? (hasMore ? t("more").replace(/^ · /, "") : "") : t("none");
-    if (state.items.length && words.length < all.length) note = t("relax") + words.join(" ");
+    if (state.items.length && step > 0) note = t("relax") + words.join(" ");
     setNote(note, state.items.length ? "" : "is-empty");
     state.busy = false;
   }).catch(function(e){
@@ -279,7 +289,7 @@ q.addEventListener("input", function(){
 });
 form.addEventListener("submit", function(e){ e.preventDefault(); clearTimeout(timer); state.q = q.value.trim(); run(true); q.blur(); });
 clear.addEventListener("click", function(){ q.value = ""; clear.hidden = true; state.q = ""; run(true); q.focus(); });
-more.addEventListener("click", function(){ if (!state.busy) run(false, state.words); });
+more.addEventListener("click", function(){ if (!state.busy) run(false, state.step); });
 onlyBox.addEventListener("change", function(){ state.only = onlyBox.checked; run(true); });
 segs.querySelectorAll("button").forEach(function(b){
   b.addEventListener("click", function(){
