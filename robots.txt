@@ -1,5 +1,19 @@
 User-agent: *
 Allow: /
+Disallow: /assets/lang/
+Disallow: /*lang=kk
 
-# ПРОД-ДОМЕН: при переезде поменять адрес sitemap
-Sitemap: https://songokura.github.io/limar-avto/sitemap.xml
+# AdsBot правило для * игнорирует - ему нужна своя группа,
+# иначе проверка объявлений увидит казахскую версию и отклонит её
+# как «Неподдерживаемый язык»
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /assets/lang/
+Disallow: /*lang=kk
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+Disallow: /assets/lang/
+Disallow: /*lang=kk
+
+Sitemap: https://limar-avto.kz/sitemap.xml

@@ -2,14 +2,14 @@
 <!-- ПРОД-ДОМЕН: при переезде на боевой домен поменять loc -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://songokura.github.io/limar-avto/</loc>
-    <lastmod>2026-09-21</lastmod>
+    <loc>https://limar-avto.kz/</loc>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://songokura.github.io/limar-avto/katalog.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <loc>https://limar-avto.kz/katalog.html</loc>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
