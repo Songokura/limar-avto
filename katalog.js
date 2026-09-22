@@ -39,6 +39,7 @@ var T = {
  ru:{find:"Начните с поиска: напишите деталь или артикул.",
      found:"Показано позиций: ", more:" · есть ещё",
      none:"Ничего не нашли. Проверьте написание или напишите нам - подберём вручную.",
+     relax:"По фразе целиком ничего нет - показываем по словам: ",
      err:"Каталог сейчас не отвечает. Напишите в WhatsApp - подскажем цену и наличие.",
      load:"Ищем…", stockY:"В наличии", stockN:"Под заказ", stockQ:"Уточнить",
      art:"Арт. ", byreq:"Цена по запросу",
@@ -47,6 +48,7 @@ var T = {
  kk:{find:"Іздеуден бастаңыз: бөлшектің атауын немесе артикулын жазыңыз.",
      found:"Көрсетілген позициялар: ", more:" · тағы бар",
      none:"Ештеңе табылмады. Жазылуын тексеріңіз немесе бізге жазыңыз - қолмен іріктейміз.",
+     relax:"Тіркес толық түрінде табылмады - мына сөздер бойынша көрсетіп тұрмыз: ",
      err:"Каталог қазір жауап бермей тұр. WhatsApp-қа жазыңыз - бағасы мен бар-жоғын айтамыз.",
      load:"Іздеп жатырмыз…", stockY:"Қоймада бар", stockN:"Тапсырыспен", stockQ:"Нақтылау",
      art:"Арт. ", byreq:"Бағасы сұраныс бойынша",
@@ -64,7 +66,7 @@ var q = document.getElementById("kq"), list = document.getElementById("klist"),
     segs = document.getElementById("kbrand");
 if (!q || !list) return;
 
-var state = {q:"", sheet:"", only:false, off:{}, items:[], busy:false, seq:0};
+var state = {q:"", sheet:"", only:false, off:{}, items:[], busy:false, seq:0, words:[]};
 var seen = {};
 
 /* ---------------- gviz ---------------- */
@@ -199,9 +201,15 @@ function setNote(s, cls){ note.textContent = s || ""; note.className = "knote" +
 /* ---------------- поиск ---------------- */
 function sheetsNow(){ return state.sheet ? [state.sheet] : SHEETS; }
 
-function run(reset){
-  var words = state.q.split(/\s+/).filter(Boolean);
-  if (!words.length) {
+/* В прайсе названия короткие («Колодка задняя»), а человек пишет фразой
+   («колодки тормозные задние»). Слова соединяются через and, и лишнее слово
+   обнуляет выдачу. Поэтому: пусто по всей фразе - отбрасываем последнее слово
+   и ищем снова, пока что-то не найдётся; чем искали, пишем под счётчиком. */
+function run(reset, words){
+  var all = state.q.split(/\s+/).filter(Boolean);
+  words = words || all;
+  state.words = words;
+  if (!all.length) {
     state.items = []; list.innerHTML = ""; cnt.textContent = "";
     more.hidden = true; setNote(t("find"));
     return;
@@ -242,9 +250,16 @@ function run(reset){
       if (ia !== ib) return ia - ib;
       return a.name.localeCompare(b.name, "ru");
     });
+    if (!state.items.length && words.length > 1) {     /* фраза не нашлась - ищем без последнего слова */
+      state.busy = false;
+      run(true, words.slice(0, -1));
+      return;
+    }
     render();
     more.hidden = !hasMore; more.disabled = false;
-    setNote(state.items.length ? (hasMore ? t("more").replace(/^ · /, "") : "") : t("none"), state.items.length ? "" : "is-empty");
+    var note = state.items.length ? (hasMore ? t("more").replace(/^ · /, "") : "") : t("none");
+    if (state.items.length && words.length < all.length) note = t("relax") + words.join(" ");
+    setNote(note, state.items.length ? "" : "is-empty");
     state.busy = false;
   }).catch(function(e){
     if (my !== state.seq) return;
@@ -264,7 +279,7 @@ q.addEventListener("input", function(){
 });
 form.addEventListener("submit", function(e){ e.preventDefault(); clearTimeout(timer); state.q = q.value.trim(); run(true); q.blur(); });
 clear.addEventListener("click", function(){ q.value = ""; clear.hidden = true; state.q = ""; run(true); q.focus(); });
-more.addEventListener("click", function(){ if (!state.busy) run(false); });
+more.addEventListener("click", function(){ if (!state.busy) run(false, state.words); });
 onlyBox.addEventListener("change", function(){ state.only = onlyBox.checked; run(true); });
 segs.querySelectorAll("button").forEach(function(b){
   b.addEventListener("click", function(){
