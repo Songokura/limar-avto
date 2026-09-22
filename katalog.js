@@ -29,6 +29,16 @@ window.SITE_EXTRA_KZ = {
 "k.ph":"Гранта майлы сүзгісі, Ларгус тежегіш қалыптары, 21214-1012005",
 "k.aria":"Каталогтан іздеу","k.clear":"Тазалау","k.go":"Табу",
 "k.brand":"Көлік маркасы","k.all":"Барлық маркалар","k.only":"Тек қоймада барлары",
+"k.secs":"Каталог бөлімдері","k.secs.t":"Бөлімдер:",
+"k.s1":"Ілініс жинақтары",
+"k.s2":"Иінді және бөлу біліктері",
+"k.s3":"Поршеньдер, клапандар, вкладыштар",
+"k.s4":"Генераторлар мен стартерлер",
+"k.s5":"Май сорғылары",
+"k.s6":"Салқындату және кондиционер радиаторлары",
+"k.s7":"Электр желдеткіштер",
+"k.s8":"ГРМ жинақтары мен помпалар",
+"k.s9":"Вакуумдық күшейткіштер",
 "k.more":"Тағы көрсету",
 "k.help":"Бөлшекті таппадыңыз ба, артикулын білмейсіз бе? Маркасын, шығарылған жылын және не керегін жазыңыз - 5-15 минутта іріктеп береміз.",
 "k.wa":"WhatsApp-қа жазу"
@@ -40,6 +50,7 @@ var T = {
      found:"Показано позиций: ", more:" · есть ещё",
      none:"Ничего не нашли. Проверьте написание или напишите нам - подберём вручную.",
      relax:"По фразе целиком ничего нет - показываем по словам: ",
+     sec:"Раздел: ", secNone:"В этом разделе по вашему запросу ничего нет - уберите лишние слова или откройте раздел целиком.",
      err:"Каталог сейчас не отвечает. Напишите в WhatsApp - подскажем цену и наличие.",
      load:"Ищем…", stockY:"В наличии", stockN:"Под заказ", stockQ:"Уточнить",
      art:"Арт. ", byreq:"Цена по запросу",
@@ -49,6 +60,7 @@ var T = {
      found:"Көрсетілген позициялар: ", more:" · тағы бар",
      none:"Ештеңе табылмады. Жазылуын тексеріңіз немесе бізге жазыңыз - қолмен іріктейміз.",
      relax:"Тіркес толық түрінде табылмады - мына сөздер бойынша көрсетіп тұрмыз: ",
+     sec:"Бөлім: ", secNone:"Бұл бөлімде сұрауыңыз бойынша ештеңе жоқ - артық сөздерді алып тастаңыз немесе бөлімді толық ашыңыз.",
      err:"Каталог қазір жауап бермей тұр. WhatsApp-қа жазыңыз - бағасы мен бар-жоғын айтамыз.",
      load:"Іздеп жатырмыз…", stockY:"Қоймада бар", stockN:"Тапсырыспен", stockQ:"Нақтылау",
      art:"Арт. ", byreq:"Бағасы сұраныс бойынша",
@@ -59,14 +71,35 @@ function t(k){ return T[document.documentElement.lang === "kk" ? "kk" : "ru"][k]
 
 var CFG = {markup: 10, cur: "₸", show: true};
 
+/* ---------------- разделы каталога ----------------
+   Раздел = товарная группа, которую называет клиент. Слова взяты из самого
+   прайса, а не из головы: «Набор сцепления», «Вал коленчатый», «Насос масляный».
+   «^» - название позиции НАЧИНАЕТСЯ с этих слов. Без якоря в раздел лезут болты
+   и кронштейны: по слову «генератор» в прайсе 887 строк, а сами генераторы - 250,
+   и на первой странице (сортировка по алфавиту) были бы одни «Болт генератора».
+   Строки внутри раздела соединяются через ИЛИ, раздел с поиском - через И. */
+var SECS = {
+clutch:    ["^набор сцеплен", "^комплект сцеплен"],
+valy:      ["^вал коленчат", "^вал распределит", "^коленвал", "^распредвал"],
+porshni:   ["^поршн", "^поршень", "^кольца ", "^вкладыш", "^палец поршнев",
+            "^клапан впускн", "^клапан выпускн"],
+genstart:  ["^генератор", "^стартер"],
+maslonasos:["^насос масл", "^маслонасос"],          /* в прайсе встречается и «маслянный» - ловится */
+radiatory: ["^радиатор охлажд", "^радиатор кондиц"],
+elvent:    ["^электровентилятор"],                   /* просто «вентилятор» - это салонные на присоске */
+grm:       ["^комплект грм", "^набор грм", "^помпа"],
+vakuum:    ["^вакуумный усилитель", "^усилитель вакуум"]
+};
+
 var q = document.getElementById("kq"), list = document.getElementById("klist"),
     cnt = document.getElementById("kcount"), note = document.getElementById("knote"),
     more = document.getElementById("kmore"), form = document.getElementById("ksearch"),
     clear = document.getElementById("kclear"), onlyBox = document.getElementById("konly"),
-    segs = document.getElementById("kbrand");
+    segs = document.getElementById("kbrand"), secs = document.getElementById("ksecs");
 if (!q || !list) return;
 
-var state = {q:"", sheet:"", only:false, off:{}, items:[], busy:false, seq:0, step:0};
+var state = {q:"", sheet:"", sec:"", only:false, off:{}, items:[], busy:false, seq:0, step:0,
+             more:false, used:[]};
 var seen = {};
 
 /* ---------------- gviz ---------------- */
@@ -128,8 +161,17 @@ function variants(w){
 
 /* Колонки листа: A № · B Код · C Артикул · D Арт. поставщика · E Товар
    F Бренд · G ЕИ · H Остаток · I Цена */
+function secWhere(key){
+  var terms = SECS[key];
+  if (!terms) return "";
+  return "(" + terms.map(function(tm){
+    var pre = tm.charAt(0) === "^";
+    return "lower(E) like '" + (pre ? "" : "%") + esc(pre ? tm.slice(1) : tm) + "%'";
+  }).join(" or ") + ")";
+}
 function query(words, only, off){
   var w = [];
+  if (state.sec) { var sw = secWhere(state.sec); if (sw) w.push(sw); }
   words.forEach(function(x){
     var or = [];
     variants(x.toLowerCase()).forEach(function(v){
@@ -198,6 +240,24 @@ function render(){
 
 function setNote(s, cls){ note.textContent = s || ""; note.className = "knote" + (cls ? " " + cls : ""); }
 
+/* Подпись под счётчиком собирается из состояния, а не пишется по месту:
+   её же перерисовываем при смене языка. */
+function secLabel(){
+  var b = secs && secs.querySelector("button.is-active");
+  return b ? b.textContent.trim() : "";
+}
+function noteNow(){
+  var parts = [];
+  if (state.sec) parts.push(t("sec") + secLabel());
+  if (!state.items.length) {
+    setNote(parts.concat([state.sec ? t("secNone") : t("none")]).join(" · "), "is-empty");
+    return;
+  }
+  if (state.step > 0 && state.used.length) parts.push(t("relax") + state.used.join(" "));
+  if (state.more) parts.push(t("more").replace(/^ · /, ""));
+  setNote(parts.join(" · "));
+}
+
 /* ---------------- поиск ---------------- */
 function sheetsNow(){ return state.sheet ? [state.sheet] : SHEETS; }
 
@@ -219,7 +279,7 @@ function run(reset, step){
   step = step || 0;
   var words = steps[step] || all;
   state.step = step;
-  if (!all.length) {
+  if (!all.length && !state.sec) {            /* ни слова, ни раздела - показывать нечего */
     state.items = []; list.innerHTML = ""; cnt.textContent = "";
     more.hidden = true; setNote(t("find"));
     return;
@@ -253,11 +313,13 @@ function run(reset, step){
     });
     /* Сначала то, где слово стоит в начале названия: по запросу «колодка» человек ждёт
        тормозные колодки, а не «Клеммы (колодка гнездовая…)». */
-    var key0 = variants(words[0].toLowerCase())[0];
+    var key0 = words.length ? variants(words[0].toLowerCase())[0] : "";
     state.items.sort(function(a, b){
-      var ia = a.name.toLowerCase().indexOf(key0), ib = b.name.toLowerCase().indexOf(key0);
-      if (ia < 0) ia = 999; if (ib < 0) ib = 999;
-      if (ia !== ib) return ia - ib;
+      if (key0) {
+        var ia = a.name.toLowerCase().indexOf(key0), ib = b.name.toLowerCase().indexOf(key0);
+        if (ia < 0) ia = 999; if (ib < 0) ib = 999;
+        if (ia !== ib) return ia - ib;
+      }
       return a.name.localeCompare(b.name, "ru");
     });
     if (!state.items.length && step + 1 < steps.length) {   /* фраза не нашлась - следующая ступенька */
@@ -267,9 +329,8 @@ function run(reset, step){
     }
     render();
     more.hidden = !hasMore; more.disabled = false;
-    var note = state.items.length ? (hasMore ? t("more").replace(/^ · /, "") : "") : t("none");
-    if (state.items.length && step > 0) note = t("relax") + words.join(" ");
-    setNote(note, state.items.length ? "" : "is-empty");
+    state.more = hasMore; state.used = words;
+    noteNow();
     state.busy = false;
   }).catch(function(e){
     if (my !== state.seq) return;
@@ -301,22 +362,46 @@ segs.querySelectorAll("button").forEach(function(b){
     run(true);
   });
 });
-document.getElementById("kquick").querySelectorAll("button").forEach(function(b){
+/* Разделы. Кнопка не пишет ничего в строку поиска: раздел - это фильтр,
+   он складывается с набранным текстом, маркой и галочкой наличия.
+   Повторный клик по активной кнопке выключает раздел. */
+function markSecs(key){
+  secs.querySelectorAll("button").forEach(function(x){
+    var on = !!key && x.dataset.sec === key;
+    x.classList.toggle("is-active", on);
+    x.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
+function toResults(){
+  /* переход считает script.js - тот же расчёт, что у пунктов меню */
+  if (window.limarGoAnchor) window.limarGoAnchor("rezultaty", false);
+  else document.getElementById("rezultaty").scrollIntoView({behavior:"smooth", block:"start"});
+}
+secs.querySelectorAll("button").forEach(function(b){
   b.addEventListener("click", function(){
-    q.value = b.dataset.q; clear.hidden = false; state.q = b.dataset.q; run(true);
-    /* переход считает script.js - тот же расчёт, что у пунктов меню */
-    if (window.limarGoAnchor) window.limarGoAnchor("rezultaty", false);
-    else document.getElementById("rezultaty").scrollIntoView({behavior:"smooth", block:"start"});
+    var on = state.sec !== b.dataset.sec;
+    state.sec = on ? b.dataset.sec : "";
+    markSecs(state.sec);
+    run(true);
+    if (on) toResults();
   });
 });
 
 /* язык мог смениться - перерисовываем подписи */
-addEventListener("limar:lang", function(){ if (state.items.length) render(); else setNote(t("find")); });
+addEventListener("limar:lang", function(){
+  if (state.items.length) { render(); noteNow(); }
+  else if (state.q || state.sec) noteNow();
+  else setNote(t("find"));
+});
 
 /* ---------------- старт ---------------- */
-var start = new URLSearchParams(location.search).get("q") || "";
+/* ?q= - готовый запрос, ?sec= - открытый раздел (пригодится для ссылок из рекламы) */
+var par = new URLSearchParams(location.search);
+var start = par.get("q") || "", startSec = par.get("sec") || "";
+if (startSec && SECS[startSec]) { state.sec = startSec; markSecs(startSec); }
 loadCfg().then(function(){
-  if (start) { q.value = start; clear.hidden = false; state.q = start.trim(); run(true); }
+  if (start) { q.value = start; clear.hidden = false; state.q = start.trim(); }
+  if (start || state.sec) run(true);
   else setNote(t("find"));
 });
 })();

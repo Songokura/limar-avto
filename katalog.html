@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://docs.google.com">
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260922-6">
+<link rel="stylesheet" href="styles.css?v=20260922-7">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
 {"@type":"ListItem","position":1,"name":"Главная","item":"https://songokura.github.io/limar-avto/"},
@@ -132,15 +132,17 @@
       <button class="btn btn-p" type="submit" data-i="k.go">Найти</button>
     </form>
 
-    <div class="kquick" id="kquick" aria-label="Частые запросы">
-      <button type="button" data-q="фильтр">фильтр</button>
-      <button type="button" data-q="колодка">колодки</button>
-      <button type="button" data-q="амортизатор">амортизатор</button>
-      <button type="button" data-q="ремень">ремень</button>
-      <button type="button" data-q="свеча">свечи</button>
-      <button type="button" data-q="стойка">стойка</button>
-      <button type="button" data-q="радиатор">радиатор</button>
-      <button type="button" data-q="масло">масло</button>
+    <div class="ksecs" id="ksecs" role="group" data-i-aria="k.secs" aria-label="Разделы каталога">
+      <span class="ksecs-t" data-i="k.secs.t">Разделы:</span>
+      <button type="button" data-sec="clutch" aria-pressed="false"><span data-i="k.s1">Комплекты сцепления</span></button>
+      <button type="button" data-sec="valy" aria-pressed="false"><span data-i="k.s2">Коленвалы и распредвалы</span></button>
+      <button type="button" data-sec="porshni" aria-pressed="false"><span data-i="k.s3">Поршни, клапаны, вкладыши</span></button>
+      <button type="button" data-sec="genstart" aria-pressed="false"><span data-i="k.s4">Генераторы и стартеры</span></button>
+      <button type="button" data-sec="maslonasos" aria-pressed="false"><span data-i="k.s5">Масляные насосы</span></button>
+      <button type="button" data-sec="radiatory" aria-pressed="false"><span data-i="k.s6">Радиаторы охлаждения и кондиционера</span></button>
+      <button type="button" data-sec="elvent" aria-pressed="false"><span data-i="k.s7">Электровентиляторы</span></button>
+      <button type="button" data-sec="grm" aria-pressed="false"><span data-i="k.s8">Комплекты ГРМ и помпы</span></button>
+      <button type="button" data-sec="vakuum" aria-pressed="false"><span data-i="k.s9">Вакуумные усилители</span></button>
     </div>
 
     <div class="kfilters">
@@ -213,7 +215,7 @@
 </div>
 
 
-<script src="katalog.js?v=20260922-6"></script>
-<script src="script.js?v=20260922-6"></script>
+<script src="katalog.js?v=20260922-7"></script>
+<script src="script.js?v=20260922-7"></script>
 </body>
 </html>

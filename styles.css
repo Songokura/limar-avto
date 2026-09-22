@@ -677,13 +677,25 @@ section[id],article[id]{scroll-margin-top:100px}
 .kclear[hidden]{display:none}
 .ksearch .btn-p{flex:none}
 
-.kquick{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
-.kquick button{
-  font-family:var(--ui);font-weight:500;font-size:13px;letter-spacing:.02em;cursor:pointer;
-  border:1px solid var(--line-d);border-radius:var(--rad-s);padding:8px 13px;
+/* Разделы каталога: кнопка включает товарную группу и работает вместе
+   с поиском, маркой и галочкой наличия. Повторный клик - выключает. */
+.ksecs{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:18px}
+.ksecs-t{
+  font-family:var(--ui);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-right:3px;
+}
+.ksecs button{
+  font-family:var(--ui);font-weight:600;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  border:1px solid var(--line-d);border-radius:var(--rad-s);padding:9px 14px;
   color:rgba(255,255,255,.8);background:rgba(255,255,255,.03);transition:border-color .25s,color .25s,background .25s;
 }
-.kquick button:hover{border-color:var(--red);color:var(--red);background:rgba(225,27,34,.08)}
+.ksecs button:hover{border-color:var(--red);color:#fff;background:rgba(225,27,34,.12)}
+.ksecs button.is-active{border-color:var(--red);color:#fff;background:rgba(225,27,34,.22)}
+@media (max-width:560px){
+  .ksecs{gap:7px}
+  .ksecs-t{width:100%;margin:0 0 -1px}
+  .ksecs button{font-size:11.5px;letter-spacing:.04em;padding:8px 11px}
+}
 
 .kfilters{display:flex;flex-wrap:wrap;align-items:center;gap:16px 22px;margin-top:22px}
 .kseg{display:flex;gap:4px;background:rgba(255,255,255,.06);border-radius:13px;padding:4px}
