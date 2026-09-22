@@ -458,7 +458,7 @@ html.js .steps.lit .steps-road path{stroke-dashoffset:0}
   border:1.5px solid var(--red);outline:5px solid var(--asphalt);
 }
 .step b{display:block;margin-top:19px;font-family:var(--disp);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.01em;line-height:1.05}
-.step p{margin-top:7px;font-size:14px;color:var(--mut)}
+.step p{margin-top:7px;font-size:13px;font-weight:500;line-height:1.5;letter-spacing:.03em;text-transform:uppercase;color:var(--mut)}
 
 /* -------- отзывы -------- */
 /* лента отзывов: горизонтальная прокрутка + кнопки листания (правило от 08.09.2026) */
