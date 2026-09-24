@@ -388,6 +388,7 @@ if (form) form.addEventListener("submit", function(e){
   lines.push(T("part") + ": " + part);
   lines.push(T("tel") + ": " + tel);
   open("https://wa.me/" + WA + "?text=" + encodeURIComponent(lines.join("\n")), "_blank");
+  if (typeof window.lmConversion === "function") lmConversion("form");
   var body = document.getElementById("qformBody"), done = document.getElementById("qformDone");
   if (body && done) { body.hidden = true; done.hidden = false; }
   form.reset();
@@ -423,11 +424,11 @@ if (form) form.addEventListener("submit", function(e){
 })();
 
 /* ---------------- ДЕЛЕГИРОВАННЫЕ КЛИКИ tel/WhatsApp ----------------
-   (сюда позже вешаются конверсии gtag) */
+   Конверсии Google Ads: lmConversion() объявлен в <head> рядом с gtag. */
 document.addEventListener("click", function(ev){
   var a = ev.target && ev.target.closest ? ev.target.closest("a[href^='tel:'],a[href*='wa.me']") : null;
-  if (!a) return;
-  /* window.gtag && gtag('event', ...) - добавляется на этапе рекламы */
+  if (!a || typeof window.lmConversion !== "function") return;
+  lmConversion(/^tel:/.test(a.getAttribute("href")) ? "phone" : "wa");
 });
 
 /* ---------------- СТАРТ ---------------- */

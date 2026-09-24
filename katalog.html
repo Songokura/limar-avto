@@ -24,11 +24,38 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://docs.google.com">
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260922-10">
+<link rel="stylesheet" href="styles.css?v=20260924-1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
 {"@type":"ListItem","position":1,"name":"Главная","item":"https://limar-avto.kz/"},
 {"@type":"ListItem","position":2,"name":"Каталог запчастей","item":"https://limar-avto.kz/katalog.html"}]}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18469693082"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18469693082');
+
+  /* Конверсии Google Ads: звонок, форма, WhatsApp. Вызываются из script.js.
+     Считаются только на боевом домене (и localhost для проверки) - превью на GitHub Pages
+     остаётся живым, его клики в статистику кампании попадать не должны. */
+  var LM_CONV = {
+    phone: 'AW-18469693082/jl1nCJCuyoMdEJrNhOdE',   /* Интерактивные номера телефонов */
+    form:  'AW-18469693082/TLjSCKCcwYMdEJrNhOdE',   /* Отправка формы для потенциальных клиентов */
+    wa:    'AW-18469693082/ePfcCK-lwYMdEJrNhOdE'    /* Контакт (WhatsApp) */
+  };
+  function lmConversion(kind) {
+    if (!/(^|\.)limar-avto\.kz$|^localhost$|^127\.0\.0\.1$/.test(location.hostname)) return;
+    if (!LM_CONV[kind]) return;
+    gtag('event', 'conversion', {
+      'send_to': LM_CONV[kind],
+      'value': 1.0,
+      'currency': 'USD',
+      'transport_type': 'beacon'
+    });
+  }
 </script>
 <!-- учёт обращений: звонки, WhatsApp, форма -->
 <script src="https://lead-bot.sultan-askarov-kz.workers.dev/t.js" data-site="limaravto" defer></script>
@@ -217,7 +244,7 @@
 </div>
 
 
-<script src="katalog.js?v=20260922-10"></script>
-<script src="script.js?v=20260922-10"></script>
+<script src="katalog.js?v=20260924-1"></script>
+<script src="script.js?v=20260924-1"></script>
 </body>
 </html>
